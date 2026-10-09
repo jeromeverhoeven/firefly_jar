@@ -9,12 +9,15 @@
 
 | Num | Item | Expansion | MuSCoW | notes |
 |----|----|----|----|----|
-|1|Minimalistic | Keeping things basic makes the accessable and we want this project to be accessable | *Should* | |
-|2|Easy Create | Must we easy to a spin up your own projects | **Must** | |
-|3|Easy to bring in | the ability to apply this proeject structure to projects that are already underway | *Should*| |
-|||||
-| 100 | Love | If you don't do this your project will fail | **Must** |  This line is an example, put your notes here |
-|101 | Like | These are things that your project will be graded on, the more and better you accomplish each item will determine if you get an A+ or a D- | *Should* | This line is an example, add notes they help |
-|102| Might be Cool | Maybe you will do these things.  Stretch goals, explore, have fun, not super important right now however | Could | This line is an example.  Don't forget your notes |
-| 103 | Crossed off | These things are specifically items that won't be done and providing a reason really help | `Wont` |  This line is an example.  Notes here, apostrophes freak me out
+| 1 | Firefly-in-a-jar look | The product must visually read as fireflies glowing/captured inside a jar - a jar-style enclosure with warm, flickering point-light sources inside | **Must** | Core aesthetic of the product, not optional |
+| 2 | Battery operated | The unit must run entirely on battery power, no wall adapter/mains power required | **Must** | Enables gifting/portability use case |
+| 3 | Unit cost < $20 @ Qty 10 | Total BOM + assembly cost per unit should be under $20 when built in a batch of 10 units | *Should* | Target cost ceiling for the pilot batch; drives component selection, but not an absolute blocker |
+| 4 | Shake to activate (accelerometer) | Device could use a low-cost accelerometer (e.g. ADXL-series) to detect motion/shaking of the jar and trigger the firefly glow effect | *Could* | More sensitive/configurable than a tilt switch, but higher part cost and needs MCU logic to debounce |
+| 5 | Shake to activate (tilt/vibration switch) | Device could use a simple mechanical tilt or vibration switch (ball switch / spring switch) to detect shaking and trigger the glow effect | *Could* | Cheapest shake-detection option; binary on/off, no analog logic needed - good budget fit |
+| 6 | Low-light to activate | Device could use a light sensor (e.g. photoresistor) so dim/dark ambient conditions trigger the glow effect, mimicking real fireflies at dusk | *Could* | Likely cheapest sensor option overall; good budget fit |
+| 7 | Sound/clap to activate | Device could use a microphone or sound sensor so talking or clapping near the jar triggers the glow effect | *Could* | Needs a mic + simple threshold detection circuit; check cost impact |
+| 8 | Single-trigger activation | Device could use just one trigger input (one sensor from items 4-7) to activate the glow effect | *Could* | Simplest and cheapest logic; lowest part count, fits the $20 budget most easily |
+| 9 | OR'd multi-trigger activation | Device could activate the glow effect when ANY one of the selected sensors (items 4-7) fires - e.g. shake OR low-light OR sound | *Could* | More responsive/forgiving trigger behavior; needs combining logic (diode-OR or MCU) across chosen sensors |
+| 10 | AND'd multi-trigger activation | Device could require that two or more of the selected sensors (items 4-7) fire together/in sequence before activating the glow effect - e.g. low-light AND shake | *Could* | More deliberate/novel trigger behavior but adds logic complexity and may need an MCU; check cost and false-trigger-avoidance tradeoff |
+| 11 | Maximum joy in use | The product should bring maximum joy to the user in its use and operation - the experience of discovering/triggering the glow and watching it should feel delightful, not just functional | *Should* | Qualitative/experiential requirement; weigh against other Design decisions (timing, LED behavior, enclosure feel) even though it isn't directly measurable like cost or power draw |
 
