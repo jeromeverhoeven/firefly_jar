@@ -1,0 +1,755 @@
+<title>Big Dipper Dialogue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#141b33;
+    --sky-mid:#3a2e52;
+    --sky-horizon:#6b4a4a;
+    --meadow:#0a140f;
+    --meadow-high:#132419;
+    --glow:#ffcf5c;
+    --glow-soft:rgba(255,207,92,.28);
+    --ink:#e9e3d4;
+    --ink-dim:#b9b2a0;
+    --rule:rgba(233,227,212,.18);
+    --panel:rgba(10,18,14,.55);
+    --panel-edge:rgba(233,227,212,.14);
+    --match:#8fae7c;
+    --outside:#c05f4f;
+    --font-display:"Fraunces",Georgia,"Times New Roman",serif;
+    --font-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Consolas,monospace;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 500px at 70% -10%, var(--sky-horizon), transparent 60%),
+      linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-horizon) 85%, var(--meadow) 100%);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.5;
+  }
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:2.25rem 1.25rem 3rem;
+    display:flex;
+    flex-direction:column;
+    gap:1.5rem;
+  }
+
+  /* ---------- Specimen-plate header ---------- */
+  .plate{
+    display:flex;
+    flex-direction:column;
+    gap:.35rem;
+  }
+  .plate .eyebrow{
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+  }
+  .plate h1{
+    font-family:var(--font-display);
+    font-optical-sizing:auto;
+    font-weight:500;
+    font-size:clamp(1.9rem,4vw,2.6rem);
+    margin:0;
+    text-wrap:balance;
+    letter-spacing:.01em;
+  }
+  .plate .binomial{
+    font-style:italic;
+    font-family:var(--font-display);
+    font-weight:400;
+    color:var(--ink-dim);
+    font-size:1.05rem;
+  }
+  .plate .dek{
+    max-width:60ch;
+    color:var(--ink-dim);
+    font-size:.95rem;
+    margin-top:.15rem;
+  }
+  .plate hr{
+    border:none;
+    border-top:1px solid var(--rule);
+    margin:.6rem 0 0;
+  }
+
+  /* ---------- Stage ---------- */
+  .stage-card{
+    position:relative;
+    border:1px solid var(--panel-edge);
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--meadow);
+  }
+  #stage{
+    display:block;
+    width:100%;
+    aspect-ratio:3/1;
+  }
+  .transport{
+    position:absolute;
+    left:.75rem;
+    bottom:.75rem;
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    background:var(--panel);
+    backdrop-filter:blur(6px);
+    border:1px solid var(--panel-edge);
+    border-radius:999px;
+    padding:.3rem .4rem .3rem .3rem;
+  }
+  .btn{
+    font-family:var(--font-body);
+    font-size:.82rem;
+    font-weight:600;
+    color:var(--ink);
+    background:rgba(233,227,212,.08);
+    border:1px solid var(--panel-edge);
+    border-radius:999px;
+    padding:.4rem .7rem;
+    cursor:pointer;
+    line-height:1;
+  }
+  .btn:hover{background:rgba(233,227,212,.16);}
+  .btn:focus-visible, input:focus-visible, select:focus-visible{
+    outline:2px solid var(--glow);
+    outline-offset:2px;
+  }
+  #playBtn{
+    width:2.1rem;height:2.1rem;padding:0;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:50%;
+    background:var(--glow);
+    color:#241a06;
+    border:none;
+    font-size:.8rem;
+  }
+  .speedgroup{display:flex;gap:.2rem;}
+  .speedgroup button.active{background:var(--glow-soft);border-color:var(--glow);color:var(--glow);}
+
+  /* ---------- Scope ---------- */
+  .scope-card{
+    border:1px solid var(--panel-edge);
+    border-radius:10px;
+    background:var(--panel);
+    padding:.85rem .9rem 1rem;
+  }
+  .scope-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:1rem;
+    margin-bottom:.4rem;
+  }
+  .scope-head h2{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:1.05rem;
+    margin:0;
+  }
+  .gaps{
+    font-family:var(--font-mono);
+    font-size:.78rem;
+    color:var(--ink-dim);
+    display:flex;
+    gap:1rem;
+    font-variant-numeric:tabular-nums;
+  }
+  .gaps b{color:var(--ink);font-weight:600;}
+  #scope{display:block;width:100%;height:190px;}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:.9rem;
+  }
+  .param{
+    border:1px solid var(--panel-edge);
+    background:var(--panel);
+    border-radius:10px;
+    padding:.85rem .95rem 1rem;
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+  }
+  .param-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:.5rem;
+  }
+  .param-top .name{
+    font-size:.86rem;
+    font-weight:600;
+  }
+  .param-top .readout{
+    font-family:var(--font-mono);
+    font-size:.86rem;
+    color:var(--glow);
+    font-variant-numeric:tabular-nums;
+  }
+  .slider-track{position:relative;height:1.6rem;display:flex;align-items:center;}
+  .range-band{
+    position:absolute;
+    height:4px;
+    border-radius:2px;
+    background:rgba(143,174,124,.55);
+    top:50%;
+    transform:translateY(-50%);
+    pointer-events:none;
+  }
+  input[type=range]{
+    -webkit-appearance:none;
+    appearance:none;
+    width:100%;
+    background:transparent;
+    position:relative;
+    z-index:1;
+  }
+  input[type=range]::-webkit-slider-runnable-track{
+    height:4px;
+    border-radius:2px;
+    background:rgba(233,227,212,.22);
+  }
+  input[type=range]::-moz-range-track{
+    height:4px;
+    border-radius:2px;
+    background:rgba(233,227,212,.22);
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:14px;height:14px;
+    margin-top:-5px;
+    border-radius:50%;
+    background:var(--glow);
+    box-shadow:0 0 0 3px rgba(255,207,92,.25);
+    cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:14px;height:14px;
+    border:none;
+    border-radius:50%;
+    background:var(--glow);
+    box-shadow:0 0 0 3px rgba(255,207,92,.25);
+    cursor:pointer;
+  }
+  .param-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:.5rem;
+  }
+  .doc-range{
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    color:var(--ink-dim);
+  }
+  .pill{
+    font-family:var(--font-body);
+    font-size:.68rem;
+    font-weight:600;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    padding:.18rem .5rem;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .pill.match{background:rgba(143,174,124,.2);color:var(--match);border:1px solid rgba(143,174,124,.45);}
+  .pill.outside{background:rgba(192,95,79,.2);color:var(--outside);border:1px solid rgba(192,95,79,.45);}
+  .param.approx .doc-range{font-style:italic;}
+
+  /* ---------- Footer ---------- */
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:.9rem;
+  }
+  @media (max-width:680px){ .footer-grid{grid-template-columns:1fr;} }
+  .card{
+    border:1px solid var(--panel-edge);
+    background:var(--panel);
+    border-radius:10px;
+    padding:.95rem 1.05rem 1.05rem;
+  }
+  .card h3{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:1rem;
+    margin:0 0 .55rem;
+  }
+  .notes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.45rem;font-size:.82rem;color:var(--ink-dim);}
+  .notes li{padding-left:1rem;position:relative;}
+  .notes li::before{content:"—";position:absolute;left:0;color:var(--ink-dim);}
+  .notes a{color:var(--ink);text-decoration-color:var(--rule);}
+  pre.code{
+    font-family:var(--font-mono);
+    font-size:.78rem;
+    line-height:1.6;
+    background:rgba(0,0,0,.28);
+    border:1px solid var(--panel-edge);
+    border-radius:8px;
+    padding:.7rem .8rem;
+    overflow-x:auto;
+    margin:0;
+    color:var(--ink);
+  }
+  pre.code .c{color:var(--ink-dim);}
+  pre.code .v{color:var(--glow);}
+
+  @media (prefers-reduced-motion: reduce){
+    .btn, input[type=range]::-webkit-slider-thumb{transition:none;}
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="plate">
+    <div class="eyebrow">Firefly Jar · Develop · DD-9 Glow Pattern reference</div>
+    <h1>Big Dipper Dialogue</h1>
+    <div class="binomial">Photinus pyralis — courtship flash exchange</div>
+    <div class="dek">A visual timing bench for the male's J-shaped flash, the female's answer, and the dark intervals between — tuned against field-recorded ranges, with live export to the jar's firmware constants.</div>
+    <hr>
+  </header>
+
+  <div class="stage-card">
+    <canvas id="stage" width="960" height="320"></canvas>
+    <div class="transport">
+      <button class="btn" id="playBtn" aria-label="Play or pause">❚❚</button>
+      <div class="speedgroup" role="group" aria-label="Playback speed">
+        <button class="btn" data-speed="0.25">0.25×</button>
+        <button class="btn" data-speed="0.5">0.5×</button>
+        <button class="btn active" data-speed="1">1×</button>
+        <button class="btn" data-speed="2">2×</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="scope-card">
+    <div class="scope-head">
+      <h2>Flash oscilloscope</h2>
+      <div class="gaps">
+        <span>dark after male: <b id="gapMF">—</b></span>
+        <span>dark after female: <b id="gapFM">—</b></span>
+      </div>
+    </div>
+    <canvas id="scope" width="960" height="190"></canvas>
+  </div>
+
+  <div class="controls" id="controls"></div>
+
+  <div class="footer-grid">
+    <div class="card">
+      <h3>Field notes</h3>
+      <ul class="notes">
+        <li>Male flash: a single yellow, J-shaped flash, <strong>0.6–0.8&nbsp;s</strong>, repeated every <strong>5–7&nbsp;s</strong>, thrown during a rising hook at the end of a dipping flight — the "big dipper" flight that gives the species its common name.</li>
+        <li>Female: answers from a stationary perch, <strong>1–2&nbsp;s</strong> after the male's flash (commonly cited near 2.0–2.2&nbsp;s at 21°C). This delay is species-specific — get it wrong and the dialogue breaks down.</li>
+        <li>Female flash duration is less precisely documented in the sources below; treated here as an estimate.</li>
+        <li>Flash rate is known to quicken in warmer air; the temperature control applies an illustrative scaling only — no precise rate law is sourced here.</li>
+        <li><a href="https://en.wikipedia.org/wiki/Photinus_pyralis" target="_blank" rel="noopener">Wikipedia — Photinus pyralis</a></li>
+        <li><a href="https://www.fireflyatlas.org/focal-species/big-dipper-firefly" target="_blank" rel="noopener">Firefly Atlas — Big Dipper Firefly</a></li>
+        <li><a href="https://static.nsta.org/case_study_docs/case_studies/fireflies.pdf" target="_blank" rel="noopener">NSTA — Conversations with Fireflies (Lloyd's flash-dialogue timing)</a></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Firmware export</h3>
+      <pre class="code" id="fwExport"></pre>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---- parameter definitions: slider range, documented range, default, unit ----
+  const params = {
+    maleDur:   { name:"Male flash duration",   min:0.3, max:1.2, doc:[0.6,0.8],  def:0.7,  unit:"s",  approx:false },
+    interval:  { name:"Male flash interval",   min:3.0, max:10.0,doc:[5,7],      def:6.0,  unit:"s",  approx:false },
+    delay:     { name:"Female response delay", min:0.5, max:3.5, doc:[1.0,2.2], def:2.0,  unit:"s",  approx:false },
+    femaleDur: { name:"Female flash duration", min:0.2, max:1.2, doc:[0.4,0.8], def:0.6,  unit:"s",  approx:true  },
+    tempF:     { name:"Air temperature",       min:50,  max:90,  doc:[65,80],   def:70,   unit:"°F", approx:true  }
+  };
+  const state = {};
+  Object.keys(params).forEach(k => state[k] = params[k].def);
+
+  // ---- build control cards ----
+  const controlsEl = document.getElementById("controls");
+  Object.entries(params).forEach(([key,p]) => {
+    const card = document.createElement("div");
+    card.className = "param" + (p.approx ? " approx" : "");
+    const bandLeft = (p.doc[0]-p.min)/(p.max-p.min)*100;
+    const bandWidth = (p.doc[1]-p.doc[0])/(p.max-p.min)*100;
+    card.innerHTML = `
+      <div class="param-top">
+        <span class="name">${p.name}</span>
+        <span class="readout" id="read-${key}"></span>
+      </div>
+      <div class="slider-track">
+        <div class="range-band" style="left:${bandLeft}%;width:${bandWidth}%"></div>
+        <input type="range" id="in-${key}" min="${p.min}" max="${p.max}" step="0.01" value="${p.def}">
+      </div>
+      <div class="param-bottom">
+        <span class="doc-range">${p.approx?"~":""}documented ${p.doc[0]}–${p.doc[1]}${p.unit}</span>
+        <span class="pill" id="pill-${key}"></span>
+      </div>
+    `;
+    controlsEl.appendChild(card);
+    document.getElementById(`in-${key}`).addEventListener("input", e => {
+      state[key] = parseFloat(e.target.value);
+      refreshControl(key);
+      refreshExport();
+    });
+  });
+
+  function refreshControl(key){
+    const p = params[key];
+    const v = state[key];
+    document.getElementById(`read-${key}`).textContent = v.toFixed(2).replace(/0$/,"").replace(/\.$/,".0") + p.unit;
+    const inRange = v >= p.doc[0] && v <= p.doc[1];
+    const pill = document.getElementById(`pill-${key}`);
+    pill.textContent = inRange ? "match" : "outside range";
+    pill.className = "pill " + (inRange ? "match" : "outside");
+  }
+  Object.keys(params).forEach(refreshControl);
+
+  // ---- effective (temperature-scaled) values ----
+  function effectiveInterval(){
+    // illustrative only: ~1.2%/°F faster than 70°F baseline, clamped sane
+    const scale = 1 - 0.012*(state.tempF-70);
+    return Math.max(2.0, state.interval*scale);
+  }
+  function effectiveDelay(){
+    const scale = 1 - 0.006*(state.tempF-70);
+    return Math.max(0.4, state.delay*scale);
+  }
+
+  // ---- firmware export ----
+  function refreshExport(){
+    const interval = effectiveInterval();
+    const delay = effectiveDelay();
+    const el = document.getElementById("fwExport");
+    el.innerHTML =
+`<span class="c">// Spec-2 Data Model constants, from this bench @ ${state.tempF.toFixed(0)}°F</span>
+<span class="c">const</span> FLASH_PERIOD_S   <span class="c">=</span> <span class="v">${interval.toFixed(1)}</span>;   <span class="c">// male flash interval</span>
+<span class="c">const</span> FADE_MS          <span class="c">=</span> <span class="v">${Math.round(state.maleDur*1000)}</span>; <span class="c">// male flash duration</span>
+<span class="c">const</span> ANSWER_DELAY_MS  <span class="c">=</span> <span class="v">${Math.round(delay*1000)}</span>; <span class="c">// female response delay</span>
+<span class="c">const</span> FEMALE_FADE_MS   <span class="c">=</span> <span class="v">${Math.round(state.femaleDur*1000)}</span>;  <span class="c">// female flash duration (est.)</span>`;
+  }
+  refreshExport();
+
+  document.getElementById("in-tempF")?.addEventListener("input", refreshExport);
+
+  // ---- canvases ----
+  const stageCv = document.getElementById("stage");
+  const scopeCv = document.getElementById("scope");
+  const sctx = stageCv.getContext("2d");
+  const octx = scopeCv.getContext("2d");
+
+  function fitCanvas(cv){
+    const dpr = Math.min(window.devicePixelRatio||1, 2);
+    const rect = cv.getBoundingClientRect();
+    const w = Math.max(1, Math.round(rect.width*dpr));
+    const h = Math.max(1, Math.round(rect.height*dpr));
+    if (cv.width!==w || cv.height!==h){ cv.width=w; cv.height=h; }
+    return dpr;
+  }
+
+  // static-ish starfield (decorative, not animated)
+  let stars = null;
+  function makeStars(w,h){
+    const list = [];
+    for(let i=0;i<40;i++){
+      list.push({x:Math.random()*w, y:Math.random()*h*0.55, r:Math.random()*1.1+.3, a:Math.random()*.5+.25});
+    }
+    return list;
+  }
+
+  // ---- envelope: smooth bump (0..1) over [0,dur] ----
+  function envelope(t, dur){
+    if (t<0 || t>dur) return 0;
+    const x = t/dur;
+    // smoothstep up then down, slight gamma to feel more "alive"
+    const s = x<0.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2;
+    return Math.pow(Math.sin(Math.PI*s), 0.9);
+  }
+
+  // ---- simulation clock ----
+  let playing = !reduceMotion;
+  let speed = 1;
+  let simTime = 0;       // seconds, advances with playback
+  let lastTs = null;
+  let cycleCount = 0;
+  let lastCycleIndex = -1;
+  let maleHomeFrac = 0.12;     // fraction across the meadow, starts far from female
+  const femaleFrac = 0.74;
+  let reunionFlash = 0;        // 0..1 pulse when male reaches female
+
+  function brightnessAt(t){
+    // t: seconds since the start of the CURRENT male cycle (0 = cycle start).
+    // The male flash anchors the cycle at t=0; the female answers `delay` later,
+    // in the same cycle's remaining dark time. (Earlier revision anchored the
+    // male flash at the END of the cycle, which pushed the female's flash past
+    // the cycle boundary for almost every realistic delay/interval combination —
+    // she never lit up. Anchoring at t=0 leaves the rest of the period for her
+    // answer and the dark gap before the next male flash.)
+    const interval = effectiveInterval();
+    const delay = effectiveDelay();
+    const maleStart = 0;
+    const maleB = envelope(t - maleStart, state.maleDur);
+    const femaleStart = Math.min(delay, Math.max(state.maleDur, interval - state.femaleDur));
+    const femaleB = envelope(t - femaleStart, state.femaleDur);
+    return {maleB, femaleB, interval, maleStart, femaleStart};
+  }
+
+  function step(ts){
+    if (lastTs==null) lastTs = ts;
+    const dt = Math.min(0.05, (ts-lastTs)/1000) * speed;
+    lastTs = ts;
+    if (playing) simTime += dt;
+
+    const interval = effectiveInterval();
+    const cycleIndex = Math.floor(simTime/interval);
+    const t = simTime - cycleIndex*interval;
+
+    if (cycleIndex !== lastCycleIndex){
+      lastCycleIndex = cycleIndex;
+      // advance the male's "home" position toward the female each new cycle
+      const dist = femaleFrac - maleHomeFrac;
+      if (Math.abs(dist) > 0.015){
+        maleHomeFrac += dist*0.35;
+      } else {
+        reunionFlash = 1;
+        maleHomeFrac = 0.12; // reset for a fresh approach
+      }
+    }
+    reunionFlash = Math.max(0, reunionFlash - dt*0.6);
+
+    const b = brightnessAt(t);
+    drawStage(b, t);
+    drawScope();
+    updateGaps(b);
+
+    requestAnimationFrame(step);
+  }
+
+  function drawStage(b, t){
+    const dpr = fitCanvas(stageCv);
+    const w = stageCv.width, h = stageCv.height;
+    sctx.clearRect(0,0,w,h);
+
+    const groundY = h*0.80;
+
+    // treeline silhouette
+    sctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--meadow-high').trim() || "#132419";
+    sctx.beginPath();
+    sctx.moveTo(0,groundY);
+    for(let x=0;x<=w;x+=w/18){
+      const bumpH = (Math.sin(x*0.013)+1.4)*h*0.045;
+      sctx.lineTo(x, groundY-bumpH);
+    }
+    sctx.lineTo(w,groundY); sctx.lineTo(w,h); sctx.lineTo(0,h); sctx.closePath();
+    sctx.fill();
+
+    // ground
+    sctx.fillStyle = "#070f0b";
+    sctx.fillRect(0, groundY, w, h-groundY);
+
+    // stars
+    if (!stars) stars = makeStars(w,h);
+    sctx.save();
+    stars.forEach(s=>{
+      sctx.globalAlpha = s.a;
+      sctx.fillStyle = "#e9e3d4";
+      sctx.beginPath(); sctx.arc(s.x,s.y,s.r,0,7); sctx.fill();
+    });
+    sctx.restore();
+
+    // ---- male flight path: dip then hook (the "J"), homing toward the female over cycles ----
+    // The flash fires at the START of each cycle (t=0). The dip-and-hook buildup
+    // happens during the dark tail of the PREVIOUS cycle, i.e. as t approaches
+    // `interval` (the next flash). So: lit during [0,maleDur); cruising in the
+    // middle; building the hook during the last `hookWindow` seconds before the
+    // cycle wraps.
+    const interval = b.interval;
+    const hookWindow = Math.min(interval*0.45, 1.6);
+    const timeToNextFlash = interval - t;
+    let mx, my;
+    const baseY = h*0.30;
+    const hookTopY = h*0.14;
+    const cruiseX = maleHomeFrac*w;
+
+    if (t < state.maleDur){
+      // lit, at the top of the hook, gliding slightly forward
+      const k = t/Math.max(state.maleDur,0.001);
+      mx = cruiseX + (0.05 + k*0.015)*w;
+      my = hookTopY - Math.sin(k*Math.PI)*h*0.01;
+    } else if (timeToNextFlash < hookWindow){
+      // dip then hook upward into the next flash
+      const f = 1 - timeToNextFlash/hookWindow; // 0..1
+      if (f < 0.6){
+        const k = f/0.6;
+        mx = cruiseX + k*w*0.02;
+        my = baseY + k*h*0.16; // dip downward
+      } else {
+        const k = (f-0.6)/0.4;
+        mx = cruiseX + (0.02 + k*0.03)*w;
+        my = (baseY+h*0.16) - k*(baseY+h*0.16-hookTopY); // hook up sharply
+      }
+    } else {
+      // cruising, gentle bob
+      mx = cruiseX + Math.sin(t*0.6)*w*0.01;
+      my = baseY + Math.sin(t*1.3)*h*0.015;
+    }
+
+    const fx = femaleFrac*w, fy = groundY - h*0.05;
+
+    // reunion burst
+    if (reunionFlash>0){
+      sctx.save();
+      sctx.globalAlpha = reunionFlash*0.5;
+      const grd = sctx.createRadialGradient((mx+fx)/2,(my+fy)/2,0,(mx+fx)/2,(my+fy)/2,w*0.18);
+      grd.addColorStop(0,"rgba(255,207,92,.9)");
+      grd.addColorStop(1,"rgba(255,207,92,0)");
+      sctx.fillStyle = grd;
+      sctx.fillRect(0,0,w,h);
+      sctx.restore();
+    }
+
+    drawFirefly(sctx, mx, my, b.maleB, 1);
+    drawFirefly(sctx, fx, fy, b.femaleB, 0.85);
+
+    // subtle ground label dots removed for cleanliness
+  }
+
+  function drawFirefly(ctx, x, y, bright, scale){
+    const r = 3.2*scale;
+    if (bright > 0.02){
+      const glowR = (18+34*bright)*scale;
+      const grd = ctx.createRadialGradient(x,y,0,x,y,glowR);
+      grd.addColorStop(0, `rgba(255,207,92,${0.85*bright})`);
+      grd.addColorStop(1, `rgba(255,207,92,0)`);
+      ctx.fillStyle = grd;
+      ctx.beginPath(); ctx.arc(x,y,glowR,0,7); ctx.fill();
+    }
+    ctx.fillStyle = bright>0.05 ? "#fff3cf" : "#4a4536";
+    ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+  }
+
+  // ---- scope ----
+  function drawScope(){
+    fitCanvas(scopeCv);
+    const w = scopeCv.width, h = scopeCv.height;
+    octx.clearRect(0,0,w,h);
+
+    const window_s = 12; // seconds visible
+    const tEnd = simTime;
+    const tStart = tEnd - window_s;
+
+    const laneH = h/2;
+    const pad = 10;
+
+    // gridlines every 1s
+    octx.strokeStyle = "rgba(233,227,212,.12)";
+    octx.fillStyle = "rgba(233,227,212,.4)";
+    octx.font = "11px 'IBM Plex Mono', monospace";
+    octx.lineWidth = 1;
+    const firstTick = Math.ceil(tStart);
+    for(let s=firstTick; s<=tEnd; s++){
+      const x = (s-tStart)/window_s*w;
+      octx.beginPath(); octx.moveTo(x,0); octx.lineTo(x,h); octx.stroke();
+      if (Math.abs(s - Math.round(s))<1e-6 && s%1===0){
+        octx.fillText((s%2===0? s+"s":""), x+3, h-4);
+      }
+    }
+    // lane baselines + labels
+    [0,1].forEach(i=>{
+      const base = i*laneH + laneH - pad;
+      octx.strokeStyle = "rgba(233,227,212,.25)";
+      octx.beginPath(); octx.moveTo(0,base); octx.lineTo(w,base); octx.stroke();
+      octx.fillStyle = "rgba(233,227,212,.55)";
+      octx.font = "600 11px 'Archivo', sans-serif";
+      octx.fillText(i===0?"MALE":"FEMALE", 6, i*laneH+14);
+    });
+
+    // curves
+    function sampleAndDraw(laneIndex, which){
+      const base = laneIndex*laneH + laneH - pad;
+      const amp = laneH - pad*2;
+      octx.beginPath();
+      const steps = 240;
+      for(let i=0;i<=steps;i++){
+        const tt = tStart + (i/steps)*window_s;
+        if (tt<0) continue;
+        const interval = effectiveInterval();
+        const cyc = Math.floor(tt/interval);
+        const local = tt - cyc*interval;
+        const b = brightnessAt(local);
+        const val = which==="male" ? b.maleB : b.femaleB;
+        const x = (tt-tStart)/window_s*w;
+        const y = base - val*amp;
+        if (i===0) octx.moveTo(x,y); else octx.lineTo(x,y);
+      }
+      octx.strokeStyle = "#ffcf5c";
+      octx.lineWidth = 2;
+      octx.stroke();
+      // soft fill
+      octx.lineTo(w, base); octx.lineTo((tStart<0?( -tStart/window_s*w):0), base);
+      octx.closePath();
+      octx.fillStyle = "rgba(255,207,92,.12)";
+      octx.fill();
+    }
+    sampleAndDraw(0,"male");
+    sampleAndDraw(1,"female");
+
+    // playhead
+    const px = w-2;
+    octx.strokeStyle = "rgba(233,227,212,.5)";
+    octx.beginPath(); octx.moveTo(px,0); octx.lineTo(px,h); octx.stroke();
+  }
+
+  function updateGaps(b){
+    // true silent (dark) durations, as distinct from the onset-to-onset
+    // "response delay" shown in the firmware export panel below.
+    const darkAfterMale = Math.max(0, b.femaleStart - state.maleDur);
+    const femaleEnd = b.femaleStart + state.femaleDur;
+    const darkAfterFemale = Math.max(0, b.interval - femaleEnd);
+    document.getElementById("gapMF").textContent = Math.round(darkAfterMale*1000) + " ms";
+    document.getElementById("gapFM").textContent = Math.round(darkAfterFemale*1000) + " ms";
+  }
+
+  // ---- transport ----
+  const playBtn = document.getElementById("playBtn");
+  function syncPlayBtn(){ playBtn.textContent = playing ? "❚❚" : "▶"; }
+  syncPlayBtn();
+  playBtn.addEventListener("click", ()=>{ playing=!playing; syncPlayBtn(); });
+
+  document.querySelectorAll(".speedgroup button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll(".speedgroup button").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      speed = parseFloat(btn.dataset.speed);
+    });
+  });
+
+  window.addEventListener("resize", ()=>{ stars=null; });
+
+  requestAnimationFrame(step);
+})();
+</script>

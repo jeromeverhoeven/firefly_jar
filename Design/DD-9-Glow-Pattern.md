@@ -19,6 +19,7 @@ What should the fireflies actually *do*: flash rhythm, fades, interplay between 
 - Females **answer after a ~1-2 s delay** ([Wikipedia](https://en.wikipedia.org/wiki/Photinus_pyralis)).
 - That gives two cheap, authentic effects: a **~6 s cadence with randomized offsets** per LED, and **call-and-response**, where one LED flashes and another answers ~1-2 s later.
 - **Synchronous fireflies** (e.g., *Photinus carolinus* in the Smokies) gradually fall into unison. A "sync" mode that drifts from random to synchronized over a minute is a striking, showable trick for older kids.
+- These timing figures can be tuned and visually checked against documented ranges in [6080014, the Flash Pattern Simulator](../Develop/6080014.md) before being committed to firmware constants.
 
 **Flash shape.** A ~0.3-0.8 s fade-in/fade-out, using a gamma-corrected PWM ramp, with a brief peak. Peak brightness randomized ±30% per flash so it never looks mechanical.
 

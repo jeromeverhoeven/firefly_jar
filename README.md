@@ -29,6 +29,7 @@ Structure of repository for product development
 | Deliverable | Description | Owner |
 |----|----|----|
 | [6080013](./Develop/6080013.md) | Bill of Materials | Jerome Verhoeven|
+| [6080014](./Develop/6080014.md) | Flash Pattern Simulator ("Big Dipper Dialogue") | Jerome Verhoeven|
 | [Asset Template](./Develop/asset-template.md) | Template | TBD|
 | [Sample Asset](./Develop/sample1.md) | Template | TBD|
 
