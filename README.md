@@ -26,10 +26,11 @@ Structure of repository for product development
 | [Design Decision Template](./Design/decision-template.md) | Template | TBD|
 
 # Develop: The development of the product
-| Deliverable | Owner |
-|----|----|
-| [Asset Template](./Develop/asset-template.md) | TBD|
-| [Sample Asset](./Develop/sample1.md) | TBD|
+| Deliverable | Description | Owner |
+|----|----|----|
+| [6080013](./Develop/6080013.md) | Bill of Materials | Jerome Verhoeven|
+| [Asset Template](./Develop/asset-template.md) | Template | TBD|
+| [Sample Asset](./Develop/sample1.md) | Template | TBD|
 
 # Destroy: Testing
 ## Test Cases: Test Procedures
@@ -48,4 +49,5 @@ Structure of repository for product development
 # Appendix
 | File | Description | Owner |
 |------|-------------|-------|
+| [Datasheets](./Appendix/Datasheets/README.md) | Manufacturer datasheets for BOM electronic parts | Jerome Verhoeven |
 | [Asset Template](./Appendix/asset-template.md) | Description of Asset | TBD |
