@@ -9,11 +9,21 @@ Structure of repository for product development
 | [6080001](./Define/6080001.md)| MuSCoW |Jerome Verhoeven|
 
 # Design: The design of the product
-| Deliverable | Owner |
-|----|----|
-| [Design Specification Template](./Design/Spec-1.md) | TBD|
-| [Design Decision Template](./Design/decision-template.md) | TBD|
-| [6080002](./Design/6080002.md) | Jerome Verhoeven|
+| Deliverable | Description | Owner |
+|----|----|-----|
+| [6080002](./Design/6080002.md) | Design Specification (Spec-2 Rev C) and House of Quality | Jerome Verhoeven|
+| [6080003](./Design/6080003.md) | DD-1: Triggering Mechanism(s) | Jerome Verhoeven|
+| [6080004](./Design/6080004.md) | DD-2: Electronics Platform | Jerome Verhoeven|
+| [6080005](./Design/6080005.md) | DD-3: Power Source | Jerome Verhoeven|
+| [6080006](./Design/6080006.md) | DD-4: LED Type and Count | Jerome Verhoeven|
+| [6080007](./Design/6080007.md) | DD-5: Glow-Cycle Timing | Jerome Verhoeven|
+| [6080008](./Design/6080008.md) | DD-6: Lid Venting | Jerome Verhoeven|
+| [6080009](./Design/6080009.md) | DD-7: LED Mounting and Electronics Location | Jerome Verhoeven|
+| [6080010](./Design/6080010.md) | DD-8: LED Color | Jerome Verhoeven|
+| [6080011](./Design/6080011.md) | DD-9: Glow Pattern and Modes | Jerome Verhoeven|
+| [6080012](./Design/6080012.md) | DD-10: Enclosure | Jerome Verhoeven|
+| [Design Specification Template](./Design/Spec-1.md) | Template | TBD|
+| [Design Decision Template](./Design/decision-template.md) | Template | TBD|
 
 # Develop: The development of the product
 | Deliverable | Owner |

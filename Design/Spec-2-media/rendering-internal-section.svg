@@ -1,87 +1,93 @@
-<svg viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
-  <rect x="0" y="0" width="700" height="700" fill="#101522"/>
+<svg viewBox="0 0 760 720" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTo0ZjZhZjM4MS00MTg2LTQ4MGYtYTcwNi1kZTgzZjM4ZmNkNWEAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaOYGHf3zhs8o2+pISU0iaIEAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDozZWE3NjJhNi01MGJhLTQxMzQtOTZmNy1iYmZkMGExMmJhMDVscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoDD4GrDy5oFE64SOhKrPBuAAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggfQWjBs0/kIbUrEr3PQUjnZvR3W+vB6UarcqPHOGkUmWkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaCQfZC0ZWD+PzC1Ozk/gFewAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCCKXIM4QSQZg41fMTRIBlCNltnJQYERralyOQpf7rV4vWRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBioZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjRmNmFmMzgxLTQxODYtNDgwZi1hNzA2LWRlODNmMzhmY2Q1YS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOmJhZDVjODc1LWIzM2ItNDNjMi05MjYxLTcyNTc3ODUwNjU2YnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCB9BaMGzT+QhtSsSvc9BSOdm9Hdb68HpRqtyo8c4aRSZaJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFgg5lk8V97NhUqCtQzojiOVcpuUtR/m881PzEqv0KFtNSeiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggx50I/nOMEpVJnKFKWjY+NypTmAz5s5BHNx/rm4sBRJp0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQAih32NBSbBmOQqAAaaiXt5cqFUdsvVID1EtkS91InWlpHzWdlfKGRfJQUWKNm9V0AdB9tNEwNMtqP1oWjtxUas=</c2pa:manifest></metadata>
+  <rect x="0" y="0" width="760" height="720" fill="#101522"/>
 
-  <text x="350" y="40" fill="#f2f2f2" font-size="22" font-weight="bold" text-anchor="middle">Internal Layout — Section View</text>
-  <text x="350" y="64" fill="#9aa4bf" font-size="13" text-anchor="middle">Electronics deck, battery pack, LED "firefly" stems, sensors</text>
+  <text x="380" y="40" fill="#f2f2f2" font-size="22" font-weight="bold" text-anchor="middle">Internal Layout — Section View (Rev B)</text>
+  <text x="380" y="64" fill="#9aa4bf" font-size="13" text-anchor="middle">All electronics on the lid disc; LED "fireflies" hang on fine leads; no false bottom</text>
 
   <!-- jar outline (section) -->
-  <path d="M250,140
-           L250,540
-           Q250,590 300,590
-           L400,590
-           Q450,590 450,540
-           L450,140
-           Z"
+  <path d="M250,150 L250,560 Q250,610 300,610 L400,610 Q450,610 450,560 L450,150"
         fill="#dce8e8" fill-opacity="0.06" stroke="#9fd8d8" stroke-width="2"/>
+  <!-- frosted liner -->
+  <path d="M257,156 L257,557 Q257,603 301,603 L399,603 Q443,603 443,557 L443,156" fill="none" stroke="#e8eef5" stroke-opacity="0.25" stroke-width="2" stroke-dasharray="4 4"/>
 
-  <!-- lid -->
-  <rect x="235" y="110" width="230" height="35" rx="6" fill="#b7bec9"/>
+  <!-- screw band (section) -->
+  <rect x="236" y="112" width="18" height="44" fill="#b7bec9"/>
+  <rect x="446" y="112" width="18" height="44" fill="#b7bec9"/>
+  <rect x="236" y="108" width="228" height="8" fill="#b7bec9"/>
+  <!-- lid disc -->
+  <rect x="254" y="116" width="192" height="12" fill="#8a6a45" stroke="#b48d5f" stroke-width="1"/>
+  <text x="350" y="100" fill="#cfd4e4" font-size="11" text-anchor="middle">custom lid disc under regular-mouth band</text>
 
-  <!-- electronics deck (false bottom) -->
-  <rect x="260" y="500" width="180" height="20" fill="#3a4258" stroke="#6b7590" stroke-width="1"/>
-  <text x="350" y="494" fill="#cfd4e4" font-size="11" text-anchor="middle">false-bottom deck</text>
+  <!-- USB-C slot + XIAO on edge -->
+  <rect x="283" y="110" width="22" height="8" fill="#1a1e28" stroke="#f0c766" stroke-width="1.5"/>
+  <rect x="288" y="128" width="12" height="64" fill="#1d6b3a" stroke="#2f8f52" stroke-width="2"/>
 
-  <!-- PCB -->
-  <rect x="275" y="520" width="150" height="45" rx="4" fill="#1d6b3a" stroke="#2f8f52" stroke-width="2"/>
-  <text x="350" y="547" fill="#d8f5e2" font-size="11" text-anchor="middle">MCU + drive PCB</text>
+  <!-- LiPo flat under disc -->
+  <rect x="330" y="128" width="96" height="14" rx="3" fill="#4a4f5e" stroke="#7b8296" stroke-width="1.5"/>
 
-  <!-- battery holder -->
-  <rect x="285" y="565" width="130" height="35" rx="4" fill="#4a4f5e" stroke="#7b8296" stroke-width="2"/>
-  <text x="350" y="587" fill="#e4e7ee" font-size="11" text-anchor="middle">2xAA battery holder + switch</text>
+  <!-- LDR through disc -->
+  <circle cx="268" cy="122" r="6" fill="#7a5fd8" stroke="#a894ff" stroke-width="1.5"/>
 
-  <!-- tilt switch -->
-  <circle cx="300" cy="533" r="9" fill="#d7a23a" stroke="#f0c766" stroke-width="1.5"/>
-  <text x="300" y="515" fill="#f0c766" font-size="10" text-anchor="middle">tilt sw.</text>
+  <!-- air holes in disc -->
+  <g fill="#101522"><rect x="314" y="116" width="4" height="12"/><rect x="434" y="116" width="4" height="12"/></g>
 
-  <!-- LDR mounted through jar wall -->
-  <circle cx="447" cy="300" r="10" fill="#7a5fd8" stroke="#a894ff" stroke-width="1.5"/>
-  <line x1="447" y1="300" x2="520" y2="270" stroke="#a894ff" stroke-width="1"/>
-  <text x="525" y="267" fill="#cfbfff" font-size="11">LDR (light sensor)</text>
-
-  <!-- LED firefly stems from PCB -->
-  <g>
-    <line x1="330" y1="522" x2="300" y2="220" stroke="#8a93ab" stroke-width="1.2"/>
-    <circle cx="300" cy="220" r="14" fill="#ffe27a" opacity="0.25"/>
-    <circle cx="300" cy="220" r="5.5" fill="#fff6c8"/>
-
-    <line x1="350" y1="522" x2="370" y2="250" stroke="#8a93ab" stroke-width="1.2"/>
-    <circle cx="370" cy="250" r="16" fill="#ffe27a" opacity="0.28"/>
-    <circle cx="370" cy="250" r="6" fill="#fff6c8"/>
-
-    <line x1="365" y1="522" x2="330" y2="330" stroke="#8a93ab" stroke-width="1.2"/>
-    <circle cx="330" cy="330" r="13" fill="#ffe27a" opacity="0.22"/>
-    <circle cx="330" cy="330" r="5" fill="#fff6c8"/>
-
-    <line x1="340" y1="522" x2="390" y2="370" stroke="#8a93ab" stroke-width="1.2"/>
-    <circle cx="390" cy="370" r="15" fill="#ffe27a" opacity="0.26"/>
-    <circle cx="390" cy="370" r="5.5" fill="#fff6c8"/>
-
-    <line x1="320" y1="522" x2="310" y2="420" stroke="#8a93ab" stroke-width="1.2"/>
-    <circle cx="310" cy="420" r="12" fill="#ffe27a" opacity="0.2"/>
-    <circle cx="310" cy="420" r="4.5" fill="#fff6c8"/>
-
-    <line x1="310" y1="522" x2="360" y2="450" stroke="#8a93ab" stroke-width="1.2"/>
-    <circle cx="360" cy="450" r="13" fill="#ffe27a" opacity="0.22"/>
-    <circle cx="360" cy="450" r="5" fill="#fff6c8"/>
+  <!-- wiring from XIAO to anchors (service loops) -->
+  <g stroke="#8a93ab" stroke-width="1" fill="none" opacity="0.8">
+    <path d="M294,150 Q275,160 266,130"/>
+    <path d="M296,160 Q300,170 312,130"/>
+    <path d="M294,170 Q330,175 344,142"/>
+    <path d="M296,180 Q360,185 372,142"/>
+    <path d="M294,186 Q395,190 400,142"/>
+    <path d="M296,190 Q430,195 428,130"/>
   </g>
+
+  <!-- hanging leads + fireflies -->
+  <g stroke="#8a93ab" stroke-width="1.2" fill="none">
+    <path d="M266,130 Q262,170 268,190"/>
+    <path d="M312,130 Q318,220 310,250"/>
+    <path d="M344,142 Q340,250 350,310"/>
+    <path d="M372,142 Q380,280 372,370"/>
+    <path d="M400,142 Q392,320 404,430"/>
+    <path d="M428,130 Q436,380 420,490"/>
+  </g>
+  <g>
+    <circle cx="268" cy="190" r="13" fill="#ffd54a" opacity="0.24"/><circle cx="268" cy="190" r="5" fill="#fff1b0"/>
+    <circle cx="310" cy="250" r="15" fill="#ffd54a" opacity="0.26"/><circle cx="310" cy="250" r="5.5" fill="#fff1b0"/>
+    <circle cx="350" cy="310" r="13" fill="#ffd54a" opacity="0.22"/><circle cx="350" cy="310" r="5" fill="#fff1b0"/>
+    <circle cx="372" cy="370" r="16" fill="#ffd54a" opacity="0.28"/><circle cx="372" cy="370" r="6" fill="#fff1b0"/>
+    <circle cx="404" cy="430" r="13" fill="#ffd54a" opacity="0.22"/><circle cx="404" cy="430" r="5" fill="#fff1b0"/>
+    <circle cx="420" cy="490" r="15" fill="#ffd54a" opacity="0.26"/><circle cx="420" cy="490" r="5.5" fill="#fff1b0"/>
+  </g>
+  <!-- length labels -->
+  <g fill="#9aa4bf" font-size="10">
+    <text x="196" y="194">~6 cm</text>
+    <text x="196" y="494">~21 cm</text>
+  </g>
+  <g stroke="#9aa4bf" stroke-width="0.8" stroke-dasharray="3 3">
+    <line x1="230" y1="190" x2="262" y2="190"/>
+    <line x1="232" y1="490" x2="414" y2="490"/>
+  </g>
+
+  <!-- moss -->
+  <path d="M257,585 Q275,548 300,566 Q322,540 345,562 Q372,544 390,568 Q412,552 443,580 L443,590 Q443,603 430,603 L270,603 Q257,603 257,590 Z" fill="#2f5d3a"/>
 
   <!-- legend -->
   <g font-size="12" fill="#cfd4e4">
-    <rect x="490" y="440" width="12" height="12" fill="#1d6b3a"/>
-    <text x="508" y="450">MCU / LED driver board</text>
-
-    <rect x="490" y="462" width="12" height="12" fill="#4a4f5e"/>
-    <text x="508" y="472">Battery pack (2xAA)</text>
-
-    <circle cx="496" cy="490" r="6" fill="#d7a23a"/>
-    <text x="508" y="494">Tilt / vibration switch</text>
-
-    <circle cx="496" cy="512" r="6" fill="#7a5fd8"/>
-    <text x="508" y="516">Light sensor (LDR)</text>
-
-    <circle cx="496" cy="534" r="6" fill="#fff6c8"/>
-    <text x="508" y="538">Diffused LED "firefly"</text>
+    <rect x="510" y="200" width="12" height="12" fill="#1d6b3a"/><text x="530" y="210">XIAO nRF52840 Sense, on edge (DD-2)</text>
+    <rect x="510" y="224" width="12" height="12" fill="#1a1e28" stroke="#f0c766"/><text x="530" y="234">USB-C port up through slot (DD-7)</text>
+    <rect x="510" y="248" width="12" height="12" fill="#4a4f5e"/><text x="530" y="258">500 mAh protected LiPo (DD-3)</text>
+    <circle cx="516" cy="278" r="6" fill="#7a5fd8"/><text x="530" y="282">LDR window in disc (DD-1)</text>
+    <rect x="510" y="296" width="12" height="12" fill="#8a6a45"/><text x="530" y="306">Disc with 6 air holes (DD-6)</text>
+    <circle cx="516" cy="326" r="6" fill="#fff1b0"/><text x="530" y="330">Pre-wired 0603 yellow LED (DD-4, DD-8)</text>
+    <line x1="510" y1="350" x2="522" y2="350" stroke="#8a93ab"/><text x="530" y="354">Lead loops through anchor, hangs free</text>
+    <rect x="510" y="368" width="12" height="12" fill="#2f5d3a"/><text x="530" y="378">Preserved moss (no deck)</text>
+  </g>
+  <g font-size="11" fill="#9aa4bf">
+    <text x="510" y="420">IMU on the XIAO senses tap / shake / tilt;</text>
+    <text x="510" y="436">LDR samples the room with LEDs off.</text>
+    <text x="510" y="460">Leads swing when the jar moves —</text>
+    <text x="510" y="476">no bending load at the solder joints.</text>
   </g>
 
-  <text x="350" y="660" fill="#6f7892" font-size="12" text-anchor="middle">Conceptual section — not to scale. See Spec-2 §Operating Principle for circuit behavior.</text>
+  <text x="380" y="670" fill="#6f7892" font-size="12" text-anchor="middle">Conceptual section — not to scale. Lid disc layout: Spec-2-media/lid-disc-layout.svg</text>
 </svg>
