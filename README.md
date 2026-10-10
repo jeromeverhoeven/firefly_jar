@@ -12,6 +12,7 @@ Structure of repository for product development
 | Deliverable | Owner |
 |----|----|
 | [Design Specification Template](./Design/Spec-1.md) | TBD|
+| [Design Decision Template](./Design/decision-template.md) | TBD|
 | [6080002](./Design/6080002.md) | Jerome Verhoeven|
 
 # Develop: The development of the product
