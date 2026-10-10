@@ -3,7 +3,7 @@
 ## Project Overview
 A battery-operated decorative jar that visually reads as fireflies glowing inside glass. Several warm-toned LEDs, mounted on fine wire "stems" at varying heights inside the jar, fade in and out independently and arrhythmically to mimic real firefly flicker. The unit wakes from a low-power sleep state and runs its glow sequence when it senses being shaken and/or when the ambient room is dark, then returns to sleep to conserve battery.
 
-This spec traces to [Define/MuSCoW.md](../Define/MuSCoW.md) and resolves which **Could** items this first design iteration adopts versus defers.
+This spec traces to [Define/MuSCoW.md](../Define/MuSCoW.md) and evaluates which **Could** items this first design iteration leans toward versus defers. The activation method (and whether methods are combined) is called out explicitly as an open design decision below — the sensor choice described in Operating Principle is this iteration's leading candidate, not a final selection.
 
 ## Renderings
 
@@ -21,18 +21,18 @@ This spec traces to [Define/MuSCoW.md](../Define/MuSCoW.md) and resolves which *
 - Outside an active glow cycle, the MCU sits in a low-power sleep mode so the batteries primarily drain only during active cycles, not while idle on a shelf.
 
 ### Trigger / activation logic
-Per [Define/MuSCoW.md](../Define/MuSCoW.md) items 4-10, four sensing options and three combination strategies were identified. For this iteration:
+Per [Define/MuSCoW.md](../Define/MuSCoW.md) items 4-10, four sensing options and three combination strategies were identified. **Which sensor(s) are used, and how they combine, is still an open design decision** (see Open Design Decisions below). The table below reflects this iteration's leading candidate, not a final choice:
 
-| MuSCoW item | Decision | Reason |
+| MuSCoW item | Leading candidate | Reason |
 |---|---|---|
-| 5 — Tilt/vibration switch (shake) | **Adopted** | Lowest cost, zero analog circuitry — a closed contact can drive the MCU's wake/interrupt pin directly |
-| 6 — Low-light sensor (LDR) | **Adopted** | Thematically correct (fireflies appear at dusk/dark) and one of the cheapest sensor options |
-| 9 — OR'd multi-trigger | **Adopted** | Either "dark enough" or "shaken" independently starts a glow cycle — most forgiving/responsive behavior for a gift object, and OR logic needs no extra parts beyond the two sensors already chosen |
-| 4 — Accelerometer | Deferred | Higher part cost and firmware complexity than a tilt switch for a binary "was it shaken" signal; revisit only if directional/intensity sensing becomes a feature request |
-| 7 — Microphone / clap | Deferred | Needs a mic + analog threshold/amplifier stage, the priciest and most false-trigger-prone of the sensor options; revisit as a v2 feature |
-| 10 — AND'd multi-trigger | Deferred | Requiring e.g. dark **and** shaken makes the toy feel less responsive; more appropriate once/if a sensor set is added that benefits from false-trigger suppression |
+| 5 — Tilt/vibration switch (shake) | Favored | Lowest cost, zero analog circuitry — a closed contact can drive the MCU's wake/interrupt pin directly |
+| 6 — Low-light sensor (LDR) | Favored | Thematically correct (fireflies appear at dusk/dark) and one of the cheapest sensor options |
+| 9 — OR'd multi-trigger | Favored | Either "dark enough" or "shaken" independently starts a glow cycle — most forgiving/responsive behavior for a gift object, and OR logic needs no extra parts beyond the two sensors already favored |
+| 4 — Accelerometer | Lower priority | Higher part cost and firmware complexity than a tilt switch for a binary "was it shaken" signal; revisit only if directional/intensity sensing becomes a feature request |
+| 7 — Microphone / clap | Lower priority | Needs a mic + analog threshold/amplifier stage, the priciest and most false-trigger-prone of the sensor options; revisit as a v2 feature |
+| 10 — AND'd multi-trigger | Lower priority | Requiring e.g. dark **and** shaken makes the toy feel less responsive; more appropriate once/if a sensor set is added that benefits from false-trigger suppression |
 
-Behavior: while asleep, a dark reading from the LDR **or** a closed pulse from the tilt switch wakes the MCU, which runs the flicker sequence for a fixed window (tentatively ~30-60 s), then re-checks conditions and either continues (still dark) or returns to sleep.
+If the leading candidate holds: while asleep, a dark reading from the LDR **or** a closed pulse from the tilt switch wakes the MCU, which runs the flicker sequence for a fixed window (tentatively ~30-60 s), then re-checks conditions and either continues (still dark) or returns to sleep.
 
 ### Power management
 - 2x AA alkaline cells in a holder with an integrated on/off switch (hard kill switch for shipping/storage).
@@ -61,9 +61,14 @@ This is roughly **55% below** the $20 Should-target, leaving headroom to:
 - add a deferred sensor (accelerometer and/or mic) in a later revision while staying under budget, and
 - cover simple packaging without threatening the target.
 
-**Conclusion: the $20/unit @ qty-10 target is comfortably feasible** with the adopted sensor set (tilt switch + LDR, OR'd). Labor/assembly time is not costed here since the qty-10 pilot batch is assumed to be hand-built by the project owner; a paid-assembly cost should be added before scaling beyond the pilot batch.
+**Conclusion: the $20/unit @ qty-10 target is comfortably feasible** with the leading-candidate sensor set (tilt switch + LDR, OR'd) and leaves enough margin to absorb a different activation-method choice once that open decision is resolved. Labor/assembly time is not costed here since the qty-10 pilot batch is assumed to be hand-built by the project owner; a paid-assembly cost should be added before scaling beyond the pilot batch.
 
 ## Open Design Decisions
+- **Activation method and/or combination of methods.** Per [Define/MuSCoW.md](../Define/MuSCoW.md) items 4-10, the final choice between accelerometer, tilt switch, LDR, and microphone - and whether to use a single sensor, OR-combine several, or AND-combine several - is not yet locked in. Operating Principle above describes tilt switch + LDR (OR'd) as this iteration's leading candidate for cost/simplicity reasons, but it remains open to revision as the design matures (e.g. if joy-of-use testing per item 11 favors a different feel, or if item 12's flexible-platform goal changes the I/O budget available for sensors).
 - Final LED count/placement for the most convincing "swarm" density without cluttering the jar.
 - Exact glow-cycle duration and whether a second shake while active should extend it.
 - Whether to add a mechanical lid vent purely for condensation/battery heat, independent of the sound-sensor cutouts shown in the rendering (sound sensing itself is deferred per item 7 above).
+- **LED stem mounting: bottom-up vs. top-hung.** The renderings show LEDs on wire stems rising from the false-bottom deck (electronics and battery pack stay low, stems reach upward). The alternative is hanging the LED stems from the underside of the lid, with wiring routed down through the lid into the jar. Tradeoffs to resolve:
+  - *Bottom-up (as rendered):* keeps all electronics/wiring in one deck assembly; lid stays a simple, removable cap; stems must be rigid/springy enough to stand upright and support their own weight.
+  - *Top-hung:* wiring and flex point move to the lid, so opening/closing the jar stresses the wire connections every time; but stems can be thinner/lighter since they only need to hang, and it may give a more natural "floating" firefly look since lights aren't anchored to a visible base deck.
+  - Decision affects wire routing, lid design (feedthrough/strain relief), assembly order, and how serviceable the battery is without disturbing the LEDs.
