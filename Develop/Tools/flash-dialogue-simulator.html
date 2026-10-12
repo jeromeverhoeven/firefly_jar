@@ -3,14 +3,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* Layout: field-guide specimen plate — dusk-meadow canvas on top, six-lane flash scope, tunable parameters, field notes + firmware export. Single dark look by design. */
   :root{
+    color-scheme:dark;
     --sky-top:#141b33;
     --sky-mid:#3a2e52;
     --sky-horizon:#6b4a4a;
     --meadow:#0a140f;
-    --meadow-high:#132419;
     --glow:#ffcf5c;
     --glow-soft:rgba(255,207,92,.28);
+    --female:#ffe7a8;
     --ink:#e9e3d4;
     --ink-dim:#b9b2a0;
     --rule:rgba(233,227,212,.18);
@@ -22,364 +24,198 @@
     --font-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
     --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Consolas,monospace;
   }
-
   *{box-sizing:border-box;}
   body{
     margin:0;
     background:
       radial-gradient(1200px 500px at 70% -10%, var(--sky-horizon), transparent 60%),
       linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-horizon) 85%, var(--meadow) 100%);
+    background-color:var(--sky-top);
     background-attachment:fixed;
     color:var(--ink);
     font-family:var(--font-body);
     line-height:1.5;
   }
+  .wrap{max-width:960px;margin:0 auto;padding:2.25rem 1.25rem 3rem;display:flex;flex-direction:column;gap:1.4rem;}
 
-  .wrap{
-    max-width:920px;
-    margin:0 auto;
-    padding:2.25rem 1.25rem 3rem;
-    display:flex;
-    flex-direction:column;
-    gap:1.5rem;
-  }
+  /* ---------- header ---------- */
+  .plate{display:flex;flex-direction:column;gap:.35rem;}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);}
+  .plate h1{font-family:var(--font-display);font-optical-sizing:auto;font-weight:500;font-size:clamp(1.9rem,4vw,2.6rem);margin:0;text-wrap:balance;letter-spacing:.01em;}
+  .binomial{font-style:italic;font-family:var(--font-display);color:var(--ink-dim);font-size:1.05rem;}
+  .dek{max-width:64ch;color:var(--ink-dim);font-size:.95rem;margin-top:.15rem;}
+  .plate hr{border:none;border-top:1px solid var(--rule);margin:.6rem 0 0;}
 
-  /* ---------- Specimen-plate header ---------- */
-  .plate{
-    display:flex;
-    flex-direction:column;
-    gap:.35rem;
+  /* ---------- stage ---------- */
+  .stage-card{position:relative;border:1px solid var(--panel-edge);border-radius:10px;overflow:hidden;background:var(--meadow);}
+  #stage{display:block;width:100%;max-width:100%;aspect-ratio:16/9;}
+  .status{
+    position:absolute;left:.75rem;top:.75rem;right:.75rem;
+    display:flex;flex-wrap:wrap;gap:.35rem .6rem;align-items:baseline;pointer-events:none;
   }
-  .plate .eyebrow{
-    font-family:var(--font-mono);
-    font-size:.72rem;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--ink-dim);
+  .phase{
+    font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    color:#241a06;background:var(--glow);border-radius:999px;padding:.15rem .55rem;font-weight:600;
   }
-  .plate h1{
-    font-family:var(--font-display);
-    font-optical-sizing:auto;
-    font-weight:500;
-    font-size:clamp(1.9rem,4vw,2.6rem);
-    margin:0;
-    text-wrap:balance;
-    letter-spacing:.01em;
-  }
-  .plate .binomial{
-    font-style:italic;
-    font-family:var(--font-display);
-    font-weight:400;
-    color:var(--ink-dim);
-    font-size:1.05rem;
-  }
-  .plate .dek{
-    max-width:60ch;
-    color:var(--ink-dim);
-    font-size:.95rem;
-    margin-top:.15rem;
-  }
-  .plate hr{
-    border:none;
-    border-top:1px solid var(--rule);
-    margin:.6rem 0 0;
-  }
-
-  /* ---------- Stage ---------- */
-  .stage-card{
-    position:relative;
-    border:1px solid var(--panel-edge);
-    border-radius:10px;
-    overflow:hidden;
-    background:var(--meadow);
-  }
-  #stage{
-    display:block;
-    width:100%;
-    max-width:100%;
-    aspect-ratio:3/1;
-  }
+  .phase-text{font-size:.86rem;color:var(--ink);text-shadow:0 1px 6px rgba(0,0,0,.6);min-width:0;}
   .transport{
-    position:absolute;
-    left:.75rem;
-    bottom:.75rem;
-    display:flex;
-    align-items:center;
-    gap:.5rem;
-    background:var(--panel);
-    backdrop-filter:blur(6px);
-    border:1px solid var(--panel-edge);
-    border-radius:999px;
-    padding:.3rem .4rem .3rem .3rem;
+    position:absolute;left:.75rem;bottom:.75rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+    background:var(--panel);backdrop-filter:blur(6px);border:1px solid var(--panel-edge);border-radius:999px;padding:.3rem .4rem .3rem .3rem;
   }
-  .btn{
-    font-family:var(--font-body);
-    font-size:.82rem;
-    font-weight:600;
-    color:var(--ink);
-    background:rgba(233,227,212,.08);
-    border:1px solid var(--panel-edge);
-    border-radius:999px;
-    padding:.4rem .7rem;
-    cursor:pointer;
-    line-height:1;
-  }
+  .btn{font-family:var(--font-body);font-size:.82rem;font-weight:600;color:var(--ink);background:rgba(233,227,212,.08);border:1px solid var(--panel-edge);border-radius:999px;padding:.4rem .7rem;cursor:pointer;line-height:1;}
   .btn:hover{background:rgba(233,227,212,.16);}
-  .btn:focus-visible, input:focus-visible, select:focus-visible{
-    outline:2px solid var(--glow);
-    outline-offset:2px;
-  }
-  #playBtn{
-    width:2.1rem;height:2.1rem;padding:0;
-    display:flex;align-items:center;justify-content:center;
-    border-radius:50%;
-    background:var(--glow);
-    color:#241a06;
-    border:none;
-    font-size:.8rem;
-  }
+  .btn:focus-visible,input:focus-visible{outline:2px solid var(--glow);outline-offset:2px;}
+  #playBtn{width:2.1rem;height:2.1rem;padding:0;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--glow);color:#241a06;border:none;font-size:.8rem;}
   .speedgroup{display:flex;gap:.2rem;}
   .speedgroup button.active{background:var(--glow-soft);border-color:var(--glow);color:var(--glow);}
 
-  /* ---------- Scope ---------- */
-  .scope-card{
-    border:1px solid var(--panel-edge);
-    border-radius:10px;
-    background:var(--panel);
-    padding:.85rem .9rem 1rem;
-  }
-  .scope-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    gap:1rem;
-    margin-bottom:.4rem;
-  }
-  .scope-head h2{
-    font-family:var(--font-display);
-    font-weight:500;
-    font-size:1.05rem;
-    margin:0;
-  }
-  .gaps{
-    font-family:var(--font-mono);
-    font-size:.78rem;
-    color:var(--ink-dim);
-    display:flex;
-    gap:1rem;
-    font-variant-numeric:tabular-nums;
-  }
+  /* ---------- scope + log ---------- */
+  .scope-card{border:1px solid var(--panel-edge);border-radius:10px;background:var(--panel);padding:.85rem .9rem 1rem;}
+  .scope-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:.4rem;}
+  .scope-head h2,.card h3{font-family:var(--font-display);font-weight:500;font-size:1.05rem;margin:0;}
+  .gaps{font-family:var(--font-mono);font-size:.78rem;color:var(--ink-dim);display:flex;gap:1rem;font-variant-numeric:tabular-nums;}
   .gaps b{color:var(--ink);font-weight:600;}
-  #scope{display:block;width:100%;height:190px;}
+  #scope{display:block;width:100%;height:252px;}
+  .log{list-style:none;margin:.7rem 0 0;padding:.6rem 0 0;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:.2rem;font-family:var(--font-mono);font-size:.76rem;color:var(--ink-dim);font-variant-numeric:tabular-nums;min-height:9.5em;}
+  .log li{display:flex;gap:.7rem;min-width:0;}
+  .log .t{color:var(--ink);flex:0 0 4.2em;text-align:right;}
+  .log .msg{min-width:0;}
+  .log .hi{color:var(--glow);}
 
-  /* ---------- Controls ---------- */
-  .controls{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-    gap:.9rem;
-  }
-  .param{
-    border:1px solid var(--panel-edge);
-    background:var(--panel);
-    border-radius:10px;
-    padding:.85rem .95rem 1rem;
-    display:flex;
-    flex-direction:column;
-    gap:.5rem;
-  }
-  .param-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    gap:.5rem;
-  }
-  .param-top .name{
-    font-size:.86rem;
-    font-weight:600;
-  }
-  .param-top .readout{
-    font-family:var(--font-mono);
-    font-size:.86rem;
-    color:var(--glow);
-    font-variant-numeric:tabular-nums;
-  }
+  /* ---------- controls ---------- */
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem;}
+  .param{border:1px solid var(--panel-edge);background:var(--panel);border-radius:10px;padding:.85rem .95rem 1rem;display:flex;flex-direction:column;gap:.5rem;}
+  .param-top{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;}
+  .param-top .name{font-size:.86rem;font-weight:600;}
+  .readout{font-family:var(--font-mono);font-size:.86rem;color:var(--glow);font-variant-numeric:tabular-nums;white-space:nowrap;}
   .slider-track{position:relative;height:1.6rem;display:flex;align-items:center;}
-  .range-band{
-    position:absolute;
-    height:4px;
-    border-radius:2px;
-    background:rgba(143,174,124,.55);
-    top:50%;
-    transform:translateY(-50%);
-    pointer-events:none;
-  }
-  input[type=range]{
-    -webkit-appearance:none;
-    appearance:none;
-    width:100%;
-    background:transparent;
-    position:relative;
-    z-index:1;
-  }
-  input[type=range]::-webkit-slider-runnable-track{
-    height:4px;
-    border-radius:2px;
-    background:rgba(233,227,212,.22);
-  }
-  input[type=range]::-moz-range-track{
-    height:4px;
-    border-radius:2px;
-    background:rgba(233,227,212,.22);
-  }
-  input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width:14px;height:14px;
-    margin-top:-5px;
-    border-radius:50%;
-    background:var(--glow);
-    box-shadow:0 0 0 3px rgba(255,207,92,.25);
-    cursor:pointer;
-  }
-  input[type=range]::-moz-range-thumb{
-    width:14px;height:14px;
-    border:none;
-    border-radius:50%;
-    background:var(--glow);
-    box-shadow:0 0 0 3px rgba(255,207,92,.25);
-    cursor:pointer;
-  }
-  .param-bottom{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:.5rem;
-  }
-  .doc-range{
-    font-family:var(--font-mono);
-    font-size:.72rem;
-    color:var(--ink-dim);
-  }
-  .pill{
-    font-family:var(--font-body);
-    font-size:.68rem;
-    font-weight:600;
-    letter-spacing:.03em;
-    text-transform:uppercase;
-    padding:.18rem .5rem;
-    border-radius:999px;
-    white-space:nowrap;
-  }
+  .range-band{position:absolute;height:4px;border-radius:2px;background:rgba(143,174,124,.55);top:50%;transform:translateY(-50%);pointer-events:none;}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;background:transparent;position:relative;z-index:1;}
+  input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:rgba(233,227,212,.22);}
+  input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:rgba(233,227,212,.22);}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;margin-top:-5px;border-radius:50%;background:var(--glow);box-shadow:0 0 0 3px rgba(255,207,92,.25);cursor:pointer;}
+  input[type=range]::-moz-range-thumb{width:14px;height:14px;border:none;border-radius:50%;background:var(--glow);box-shadow:0 0 0 3px rgba(255,207,92,.25);cursor:pointer;}
+  .param-bottom{display:flex;justify-content:space-between;align-items:center;gap:.5rem;}
+  .doc-range{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-dim);}
+  .param.approx .doc-range{font-style:italic;}
+  .pill{font-size:.68rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:.18rem .5rem;border-radius:999px;white-space:nowrap;}
   .pill.match{background:rgba(143,174,124,.2);color:var(--match);border:1px solid rgba(143,174,124,.45);}
   .pill.outside{background:rgba(192,95,79,.2);color:var(--outside);border:1px solid rgba(192,95,79,.45);}
-  .param.approx .doc-range{font-style:italic;}
   .hint{font-size:.72rem;color:var(--ink-dim);line-height:1.4;}
 
-  /* ---------- Footer ---------- */
-  .footer-grid{
-    display:grid;
-    grid-template-columns:1.1fr 1fr;
-    gap:.9rem;
-  }
-  @media (max-width:680px){ .footer-grid{grid-template-columns:1fr;} }
+  /* ---------- footer ---------- */
+  .footer-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:.9rem;}
   .footer-grid > *, .controls > *{min-width:0;}
-  .card{
-    border:1px solid var(--panel-edge);
-    background:var(--panel);
-    border-radius:10px;
-    padding:.95rem 1.05rem 1.05rem;
-  }
-  .card h3{
-    font-family:var(--font-display);
-    font-weight:500;
-    font-size:1rem;
-    margin:0 0 .55rem;
-  }
+  .card{border:1px solid var(--panel-edge);background:var(--panel);border-radius:10px;padding:.95rem 1.05rem 1.05rem;display:flex;flex-direction:column;gap:.55rem;}
   .notes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.45rem;font-size:.82rem;color:var(--ink-dim);}
   .notes li{padding-left:1rem;position:relative;}
-  .notes li::before{content:"—";position:absolute;left:0;color:var(--ink-dim);}
+  .notes li::before{content:"—";position:absolute;left:0;}
+  .notes strong{color:var(--ink);font-weight:600;}
   .notes a{color:var(--ink);text-decoration-color:var(--rule);}
-  pre.code{
-    font-family:var(--font-mono);
-    font-size:.78rem;
-    line-height:1.6;
-    background:rgba(0,0,0,.28);
-    border:1px solid var(--panel-edge);
-    border-radius:8px;
-    padding:.7rem .8rem;
-    overflow-x:auto;
-    margin:0;
-    color:var(--ink);
-  }
+  pre.code{font-family:var(--font-mono);font-size:.76rem;line-height:1.6;background:rgba(0,0,0,.28);border:1px solid var(--panel-edge);border-radius:8px;padding:.7rem .8rem;overflow-x:auto;margin:0;color:var(--ink);}
   pre.code .c{color:var(--ink-dim);}
   pre.code .v{color:var(--glow);}
 
-  /* ---------- Phone width: taller stage, controls below it ---------- */
   @media (max-width:680px){
     .wrap{padding-block:1.5rem 2.5rem;}
-    #stage{aspect-ratio:1/1;}
-    .transport{
-      position:static;
-      margin:.6rem;
-      justify-content:space-between;
-      flex-wrap:wrap;
-    }
+    .footer-grid{grid-template-columns:1fr;}
+    #stage{aspect-ratio:4/5;}
+    .transport{position:static;margin:.6rem;justify-content:space-between;}
+    .status{position:static;margin:.7rem .7rem 0;}
+    .phase-text{text-shadow:none;}
     .scope-head{flex-direction:column;align-items:flex-start;gap:.35rem;}
     .gaps{flex-wrap:wrap;gap:.2rem 1rem;}
-    #scope{height:170px;}
+    #scope{height:240px;}
   }
+  @media (prefers-reduced-motion: reduce){ .btn{transition:none;} }
 
-  @media (prefers-reduced-motion: reduce){
-    .btn, input[type=range]::-webkit-slider-thumb{transition:none;}
-  }
+  /* ---------- story list + segmented control ---------- */
+  .story-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);gap:.9rem;align-items:start;}
+  .story{list-style:none;margin:0;padding:0;counter-reset:st;display:flex;flex-direction:column;gap:.3rem;}
+  .story li{counter-increment:st;display:grid;grid-template-columns:1.6rem 1fr;column-gap:.4rem;padding:.35rem .45rem;border-radius:7px;border:1px solid transparent;font-size:.84rem;color:var(--ink-dim);}
+  .story li::before{content:counter(st);grid-row:span 2;font-family:var(--font-mono);font-size:.78rem;color:var(--ink-dim);text-align:right;padding-top:.05rem;}
+  .story li .st-title{color:var(--ink);font-weight:600;}
+  .story li .st-meta{font-family:var(--font-mono);font-size:.7rem;}
+  .story li.done{opacity:.55;}
+  .story li.now{border-color:var(--glow);background:var(--glow-soft);}
+  .story li.now::before,.story li.now .st-title{color:var(--glow);}
+  .story li.loop{display:block;counter-increment:none;font-family:var(--font-mono);font-size:.72rem;padding-left:2.45rem;}
+  .story li.loop::before{content:"↺ ";}
+  .seg{display:flex;gap:.3rem;flex-wrap:wrap;}
+  .seg .btn.active{background:var(--glow-soft);border-color:var(--glow);color:var(--glow);}
+  @media (max-width:680px){ .story-grid{grid-template-columns:1fr;} }
 </style>
 
 <div class="wrap">
 
   <header class="plate">
-    <div class="eyebrow">Firefly Jar · Develop · DD-9 Glow Pattern reference</div>
+    <div class="eyebrow">Firefly Jar · Develop · DD-9 glow pattern reference</div>
     <h1>Big Dipper Dialogue</h1>
-    <div class="binomial">Photinus pyralis — courtship flash exchange</div>
-    <div class="dek">A visual timing bench for the dialogue our fixed LEDs will actually perform: the male's rising-holding-fading glow standing in for his up-and-down flight, the female's sharp answer, and the dark intervals between — with live export to the jar's firmware constants.</div>
+    <div class="binomial">Photinus pyralis — a courtship story told on six fixed LEDs</div>
+    <div class="dek">Three males flash high in the jar. The female (LED 6, lowest, "in the grass") takes a liking to the dominant male, the one with the long, slow-fading flash. A rival tries his luck and she goes quiet. The dominant male wins her back, descends, lands beside her, and the two go dark together while the rivals flash on.</div>
     <hr>
   </header>
 
   <div class="stage-card">
-    <canvas id="stage" width="960" height="320"></canvas>
+    <div class="status" aria-live="polite">
+      <span class="phase" id="phase">Step 1</span>
+      <span class="phase-text" id="phaseText"></span>
+    </div>
+    <canvas id="stage" width="960" height="540" aria-label="Animated jar with six hanging LED fireflies"></canvas>
     <div class="transport">
       <button class="btn" id="playBtn" aria-label="Play or pause">❚❚</button>
       <div class="speedgroup" role="group" aria-label="Playback speed">
-        <button class="btn" data-speed="0.25">0.25×</button>
         <button class="btn" data-speed="0.5">0.5×</button>
         <button class="btn active" data-speed="1">1×</button>
         <button class="btn" data-speed="2">2×</button>
+        <button class="btn" data-speed="4">4×</button>
       </div>
+      <button class="btn" id="restartBtn">Restart</button>
     </div>
   </div>
 
-  <div class="scope-card">
-    <div class="scope-head">
-      <h2>Flash oscilloscope</h2>
-      <div class="gaps">
-        <span>dark after male: <b id="gapMF">—</b></span>
-        <span>dark after female: <b id="gapFM">—</b></span>
-      </div>
+  <div class="story-grid">
+    <div class="card">
+      <h3>The story</h3>
+      <ol class="story" id="story"></ol>
     </div>
-    <canvas id="scope" width="960" height="190"></canvas>
+    <div class="scope-card">
+      <div class="scope-head">
+        <h2>Six-lane flash scope</h2>
+        <div class="gaps">
+          <span>dominant cycle: <b id="cadNow">—</b></span>
+          <span>female delay: <b id="delNow">—</b></span>
+        </div>
+      </div>
+      <canvas id="scope" width="960" height="252" aria-label="Brightness of each LED over the last 15 seconds"></canvas>
+      <ol class="log" id="log" aria-label="Event log"></ol>
+    </div>
   </div>
 
-  <div class="controls" id="controls"></div>
+  <div class="controls" id="controls">
+    <div class="param">
+      <div class="param-top"><span class="name" id="domLabel">Dominant male's interval</span><span class="readout" id="read-dom"></span></div>
+      <div class="seg" role="group" aria-labelledby="domLabel">
+        <button class="btn" data-dom="4">4 s</button>
+        <button class="btn" data-dom="5">5 s</button>
+        <button class="btn active" data-dom="6">6 s</button>
+      </div>
+      <div class="hint" id="hint-dom"></div>
+    </div>
+  </div>
 
   <div class="footer-grid">
     <div class="card">
-      <h3>Field notes</h3>
+      <h3>Field notes behind the story</h3>
       <ul class="notes">
-        <li><strong>In the field:</strong> the male throws a single yellow flash while flying a rising-then-dipping "J" path, repeated every <strong>5–7&nbsp;s</strong> — the "big dipper" flight that gives the species its common name.</li>
-        <li><strong>In the jar:</strong> our LEDs are fixed points, not wings — there's no up-and-down flight to borrow. Instead, each male display is a <strong>fade up, hold, then fade down</strong>, standing in for the climb and dip of his flight. Each of those three segments is independently randomized <strong>1–2&nbsp;s</strong>, so no two displays read identically.</li>
-        <li><strong>Female:</strong> answers from a stationary perch with a <strong>sharp 0.5&nbsp;s</strong> flash, timed <strong>2&nbsp;s after the male's display begins</strong> (field-documented response delay is commonly cited near 1–2.2&nbsp;s after his flash). This delay is species-specific — get it wrong and the dialogue breaks down.</li>
-        <li>Flash rate is known to quicken in warmer air; the temperature control applies an illustrative scaling only — no precise rate law is sourced here.</li>
-        <li><a href="https://en.wikipedia.org/wiki/Photinus_pyralis" target="_blank" rel="noopener">Wikipedia — Photinus pyralis</a></li>
+        <li><strong>Male flash.</strong> A single long yellow flash, repeated every 5–7 s on a typical evening and as fast as ~3 s on hot nights (Edmunds 1963). The story uses fixed 4, 5 and 6 s cadences so each male is easy to tell apart.</li>
+        <li><strong>The dominant male</strong> has the longest flash. Females of single-flash species favor longer flashes. Here the rivals flash 0.4 s and the dominant male 0.8 s plus an extra 0.25 s on his fade.</li>
+        <li><strong>Female answer.</strong> One dim flash after a species-specific delay of about 1–2 s (one measurement: 2.1 ± 0.2 s), much dimmer than a male's.</li>
+        <li><strong>Rivals and approach.</strong> The male homes in on her answers and lands nearby, and rival males converge on an answering female. The rival interlude, cycle counts and LED positions in this story are design choices for the jar, not measured behavior.</li>
+        <li><a href="https://academic.oup.com/aesa/article-abstract/56/5/716/76605" target="_blank" rel="noopener">Edmunds 1963 — temperature and flash interval</a></li>
         <li><a href="https://www.fireflyatlas.org/focal-species/big-dipper-firefly" target="_blank" rel="noopener">Firefly Atlas — Big Dipper Firefly</a></li>
-        <li><a href="https://static.nsta.org/case_study_docs/case_studies/fireflies.pdf" target="_blank" rel="noopener">NSTA — Conversations with Fireflies (Lloyd's flash-dialogue timing)</a></li>
+        <li><a href="https://kjordahl.codeberg.page/ffbehavior.html" target="_blank" rel="noopener">Jordahl — firefly jar behavior (Case 2004, Buck 1988)</a></li>
+        <li><a href="https://goldbio.com/articles/article/Secret-Codes-Embedded-In-Firefly-Flashes" target="_blank" rel="noopener">GoldBio — courtship, landing, female choice</a></li>
       </ul>
     </div>
     <div class="card">
@@ -393,405 +229,351 @@
 <script>
 (function(){
   "use strict";
-
   const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Each male display's fade-up / hold / fade-down segment is independently
-  // randomized in this range (fixed per JP's call — not a field-literature
-  // figure, so it's not exposed as a tunable slider).
-  const SEGMENT_MIN = 1.0, SEGMENT_MAX = 2.0;
+  // ---------------- story constants ----------------
+  const RIVAL_FLASH = 0.40;            // minimum male flash (s)
+  const DOM_FLASH = 0.80;              // maximum male flash (s)
+  const DOM_EXTRA_FADE = 0.25;         // extra fade so the dominant male stands out
+  const FEMALE_LED = 6;
+  const HOME = {D:2, R1:1, R2:3};      // starting LEDs, upper jar
+  const MID_LED = 4, LANDED_LED = 5;
+  const SCOPE_WINDOW = 15;
 
-  // ---- parameter definitions: slider range, documented range, default, unit ----
+  // LEDs: hang length (cm) and horizontal position inside the jar (0..1)
+  const LEDS = [null,
+    {cm:6, x:0.30}, {cm:9, x:0.68}, {cm:12, x:0.42},
+    {cm:15, x:0.72}, {cm:18, x:0.36}, {cm:21, x:0.60}];
+
+  // The nine-step story. `count` = cycles of `by` ("D" or "R2") before moving on.
+  const STEPS = [
+    null,
+    {by:"D",  count:3, title:"Three males patrol", text:"Three males flash high in the jar. The dominant male's flash is longer, with a slow fade."},
+    {by:"D",  count:2, title:"She answers him", text:"The female begins answering the dominant male, a dim flash about 2 s after each of his."},
+    {by:"R2", count:3, title:"A rival moves in", text:"A rival drops to the middle of the jar. The female goes quiet while the others keep flashing."},
+    {by:"D",  count:3, title:"The rival retreats", text:"The rival climbs back. Everyone is back where they started, and she stays silent."},
+    {by:"D",  count:3, title:"She answers again", text:"The female answers the dominant male again."},
+    {by:"D",  count:3, title:"He descends", text:"The dominant male drops to the middle of the jar. She keeps answering; the rivals keep flashing."},
+    {by:"D",  count:2, title:"He lands", text:"He lands on the low LED beside her. They keep trading flashes."},
+    {by:"D",  count:5, title:"Together, dark", text:"The pair goes dark. Only the rivals keep flashing. Then the story starts over."},
+  ];
+
+  // ---------------- parameters ----------------
   const params = {
-    interval:  { name:"Cycle interval",        min:4.0, max:12.0,doc:[5,7],      def:7.0,  unit:"s",  approx:false },
-    delay:     { name:"Female response delay", min:0.5, max:3.5, doc:[1.0,2.2], def:2.0,  unit:"s",  approx:false },
-    femaleDur: { name:"Female flash duration", min:0.2, max:1.0, doc:[0.3,0.6], def:0.5,  unit:"s",  approx:true  },
-    tempF:     { name:"Air temperature",       min:50,  max:90,  doc:[65,80],   def:70,   unit:"°F", approx:true  }
+    delay: { name:"Female response delay", min:0.8, max:3.0, doc:[1.0,2.2], def:2.1, unit:"s", approx:false, step:0.05 },
+    gain:  { name:"Female brightness", min:5, max:40, doc:[8,15], def:12, unit:"%", approx:true, step:1 }
   };
-  const state = {};
+  const state = {domPeriod:6};
   Object.keys(params).forEach(k => state[k] = params[k].def);
+  function periods(){
+    const rest = [4,5,6].filter(v => v !== state.domPeriod);
+    return {D:state.domPeriod, R1:rest[0], R2:rest[1]};
+  }
 
-  // ---- build control cards ----
   const controlsEl = document.getElementById("controls");
   Object.entries(params).forEach(([key,p]) => {
     const card = document.createElement("div");
     card.className = "param" + (p.approx ? " approx" : "");
-    const bandLeft = (p.doc[0]-p.min)/(p.max-p.min)*100;
-    const bandWidth = (p.doc[1]-p.doc[0])/(p.max-p.min)*100;
+    const bandLeft = (p.doc[0]-p.min)/(p.max-p.min)*100, bandWidth = (p.doc[1]-p.doc[0])/(p.max-p.min)*100;
     card.innerHTML = `
-      <div class="param-top">
-        <span class="name">${p.name}</span>
-        <span class="readout" id="read-${key}"></span>
-      </div>
+      <div class="param-top"><label class="name" for="in-${key}">${p.name}</label><span class="readout" id="read-${key}"></span></div>
       <div class="slider-track">
         <div class="range-band" style="left:${bandLeft}%;width:${bandWidth}%"></div>
-        <input type="range" id="in-${key}" min="${p.min}" max="${p.max}" step="0.01" value="${p.def}">
+        <input type="range" id="in-${key}" min="${p.min}" max="${p.max}" step="${p.step}" value="${p.def}">
       </div>
       <div class="param-bottom">
         <span class="doc-range">${p.approx?"~":""}documented ${p.doc[0]}–${p.doc[1]}${p.unit}</span>
         <span class="pill" id="pill-${key}"></span>
-      </div>
-      ${key==="interval" ? `<div class="hint">male's 3 segments randomize 1–2s each (up to 6s total) — if shorter than that, his fade is cut short</div>` : ""}
-    `;
+      </div>`;
     controlsEl.appendChild(card);
     document.getElementById(`in-${key}`).addEventListener("input", e => {
-      state[key] = parseFloat(e.target.value);
-      refreshControl(key);
-      refreshExport();
+      state[key] = parseFloat(e.target.value); refreshControl(key); refreshDerived();
     });
   });
-
   function refreshControl(key){
-    const p = params[key];
-    const v = state[key];
-    document.getElementById(`read-${key}`).textContent = v.toFixed(2).replace(/0$/,"").replace(/\.$/,".0") + p.unit;
-    const inRange = v >= p.doc[0] && v <= p.doc[1];
+    const p = params[key], v = state[key];
+    document.getElementById(`read-${key}`).textContent = (p.step < 1 ? v.toFixed(2) : String(Math.round(v))) + p.unit;
+    const ok = v >= p.doc[0] && v <= p.doc[1];
     const pill = document.getElementById(`pill-${key}`);
-    pill.textContent = inRange ? "match" : "outside range";
-    pill.className = "pill " + (inRange ? "match" : "outside");
+    pill.textContent = ok ? "match" : "outside range"; pill.className = "pill " + (ok ? "match" : "outside");
   }
-  Object.keys(params).forEach(refreshControl);
-
-  // ---- effective (temperature-scaled) values ----
-  function effectiveInterval(){
-    // illustrative only: ~1.2%/°F faster than 70°F baseline, clamped sane
-    const scale = 1 - 0.012*(state.tempF-70);
-    return Math.max(2.0, state.interval*scale);
+  document.querySelectorAll("[data-dom]").forEach(btn => btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-dom]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    state.domPeriod = parseFloat(btn.dataset.dom);
+    refreshDerived(); restart();
+  }));
+  function refreshDerived(){
+    const P = periods();
+    document.getElementById("read-dom").textContent = `${P.D} s`;
+    document.getElementById("hint-dom").textContent = `Rivals: LED 1 every ${P.R1} s, LED 3 every ${P.R2} s (the LED 3 rival is the one who moves in). Changing this restarts the story.`;
+    document.getElementById("cadNow").textContent = `${P.D} s`;
+    document.getElementById("delNow").textContent = `${state.delay.toFixed(2)} s`;
+    refreshExport();
   }
-  function effectiveDelay(){
-    const scale = 1 - 0.006*(state.tempF-70);
-    return Math.max(0.4, state.delay*scale);
-  }
-
-  // ---- firmware export ----
   function refreshExport(){
-    const interval = effectiveInterval();
-    const delay = effectiveDelay();
-    const el = document.getElementById("fwExport");
-    el.innerHTML =
-`<span class="c">// Spec-2 Data Model constants, from this bench @ ${state.tempF.toFixed(0)}°F</span>
-<span class="c">const</span> FLASH_PERIOD_S     <span class="c">=</span> <span class="v">${interval.toFixed(1)}</span>;   <span class="c">// cycle interval</span>
-<span class="c">const</span> FADE_UP_MIN_MS    <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MIN*1000)}</span>; <span class="c">const</span> FADE_UP_MAX_MS    <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MAX*1000)}</span>;
-<span class="c">const</span> HOLD_MIN_MS       <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MIN*1000)}</span>; <span class="c">const</span> HOLD_MAX_MS       <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MAX*1000)}</span>;
-<span class="c">const</span> FADE_DOWN_MIN_MS  <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MIN*1000)}</span>; <span class="c">const</span> FADE_DOWN_MAX_MS  <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MAX*1000)}</span>;
-<span class="c">// ^ each randomized per display — new additions, not yet in Spec-2's Data Model</span>
-<span class="c">const</span> ANSWER_DELAY_MS    <span class="c">=</span> <span class="v">${Math.round(delay*1000)}</span>; <span class="c">// female response delay, from male onset</span>
-<span class="c">const</span> FEMALE_FADE_MS     <span class="c">=</span> <span class="v">${Math.round(state.femaleDur*1000)}</span>;  <span class="c">// female flash duration (est.)</span>`;
+    const P = periods();
+    const C = s => `<span class="c">${s}</span>`, V = s => `<span class="v">${s}</span>`;
+    document.getElementById("fwExport").innerHTML =
+`${C("// Courtship story — LEDs and timing")}
+${C("const")} FEMALE_LED          = ${V(FEMALE_LED)};
+${C("const")} DOM_HOME_LED        = ${V(HOME.D)};  ${C("// R1 = 1, R2 = 3")}
+${C("const")} MID_LED             = ${V(MID_LED)};
+${C("const")} LANDED_LED          = ${V(LANDED_LED)};
+${C("const")} DOM_PERIOD_MS       = ${V(P.D*1000)};
+${C("const")} R1_PERIOD_MS        = ${V(P.R1*1000)};
+${C("const")} R2_PERIOD_MS        = ${V(P.R2*1000)};
+${C("const")} RIVAL_FLASH_MS      = ${V(RIVAL_FLASH*1000)};
+${C("const")} DOM_FLASH_MS        = ${V(DOM_FLASH*1000)};
+${C("const")} DOM_EXTRA_FADE_MS   = ${V(DOM_EXTRA_FADE*1000)};
+${C("const")} ANSWER_DELAY_MS     = ${V(Math.round(state.delay*1000))}; ${C("// from male peak")}
+${C("const")} FEMALE_GAIN         = ${V((state.gain/100).toFixed(2))};
+${C("// cycles per step 1..8 (step 3 counts the rival's cycles)")}
+${C("const")} STEP_CYCLES[]       = { ${V(STEPS.slice(1).map(s=>s.count).join(", "))} };`;
   }
-  refreshExport();
 
-  document.getElementById("in-tempF")?.addEventListener("input", refreshExport);
+  // story list
+  const storyEl = document.getElementById("story");
+  storyEl.innerHTML = STEPS.slice(1).map((s,i)=>`<li id="st-${i+1}"><span class="st-title">${s.title}</span><span class="st-meta">${s.count} ${s.by==="D"?"dominant":"rival"} cycle${s.count>1?"s":""}</span></li>`).join("")
+    + `<li class="loop">Back to step 1</li>`;
 
-  // ---- canvases ----
-  const stageCv = document.getElementById("stage");
-  const scopeCv = document.getElementById("scope");
-  const sctx = stageCv.getContext("2d");
-  const octx = scopeCv.getContext("2d");
+  // ---------------- simulation ----------------
+  let simTime = 0, playing = !reduceMotion, speed = 1;
+  let pulses = [], events = [];
+  let males = {}, step = 1, stepCount = 0, epoch = 0, pendingAdvance = false;
+  const logItems = [];
 
+  function schedule(ev){ ev.epoch = epoch; events.push(ev); events.sort((a,b)=>a.t-b.t); }
+  function addPulse(led,t0,rise,hold,fall,peak){ pulses.push({led,t0,rise,hold,fall,peak}); }
+  function log(msg, hi){
+    logItems.unshift({t:simTime, msg, hi});
+    if (logItems.length > 6) logItems.pop();
+    document.getElementById("log").innerHTML = logItems.map(i=>`<li><span class="t">${i.t.toFixed(1)}s</span><span class="msg${i.hi?" hi":""}">${i.msg}</span></li>`).join("");
+  }
+  function showStep(){
+    document.getElementById("phase").textContent = `Step ${step} of 8`;
+    document.getElementById("phaseText").textContent = STEPS[step].text;
+    for (let i=1;i<=8;i++){
+      const li = document.getElementById(`st-${i}`);
+      li.classList.toggle("now", i===step);
+      li.classList.toggle("done", i<step);
+    }
+  }
+  function setStep(n){
+    step = n; stepCount = 0;
+    if (n === 1){ males.D.led = HOME.D; males.R1.led = HOME.R1; males.R2.led = HOME.R2; }
+    if (n === 3){ males.R2.led = MID_LED; log("Rival (R2) drops to the middle of the jar"); }
+    if (n === 4){ males.R2.led = HOME.R2; log("Rival climbs back to LED 3"); }
+    if (n === 6){ males.D.led = MID_LED; log("Dominant male descends to LED 4", true); }
+    if (n === 7){ males.D.led = LANDED_LED; log("Dominant male lands on LED 5, beside her", true); }
+    if (n === 8){ log("The pair goes dark", true); }
+    if (n === 1){ log("Story begins: three males on LEDs 1-3"); }
+    showStep();
+  }
+  const femaleAnswers = () => step === 2 || step === 5 || step === 6 || step === 7;
+
+  function emitMale(m, t){
+    const dom = m.id === "D";
+    const dur = dom ? DOM_FLASH : RIVAL_FLASH;
+    const rise = dur*0.3, hold = dur*0.1, fall = dur*0.6 + (dom ? DOM_EXTRA_FADE : 0);
+    addPulse(m.led, t, rise, hold, fall, 1);
+    return t + rise;    // peak time
+  }
+  function emitFemale(t){ addPulse(FEMALE_LED, t, 0.06, 0.05, 0.40, state.gain/100); }
+
+  function handle(ev){
+    if (ev.epoch !== epoch) return;
+    const t = ev.t;
+    if (ev.type === "male"){
+      const m = males[ev.id];
+      schedule({t: t + m.period, type:"male", id:m.id});   // keep the cadence going
+      const dark = (m.id === "D" && step === 8);
+      let pk = null;
+      if (!dark) pk = emitMale(m, t);
+      if (m.id === "D" && !dark && femaleAnswers()) schedule({t: pk + state.delay, type:"female"});
+      // count cycles for the current step
+      if (STEPS[step].by === m.id && !pendingAdvance){
+        stepCount++;
+        if (stepCount >= STEPS[step].count){
+          // finish the cycle (his flash + her answer) before the next step begins
+          pendingAdvance = true;
+          schedule({t: t + Math.min(state.delay + 0.6, m.period - 0.3), type:"advance"});
+        }
+      }
+      return;
+    }
+    if (ev.type === "advance"){
+      pendingAdvance = false;
+      setStep(step === 8 ? 1 : step + 1);
+      return;
+    }
+    if (ev.type === "female"){
+      emitFemale(t);
+      log(`Female answers (+${state.delay.toFixed(1)} s)`, true);
+    }
+  }
+
+  function restart(){
+    epoch++; events = []; pulses = []; simTime = 0; logItems.length = 0; pendingAdvance = false;
+    const P = periods();
+    males = {
+      D:  {id:"D",  led:HOME.D,  period:P.D},
+      R1: {id:"R1", led:HOME.R1, period:P.R1},
+      R2: {id:"R2", led:HOME.R2, period:P.R2}
+    };
+    setStep(1);
+    schedule({t:0.4, type:"male", id:"D"});
+    schedule({t:1.3, type:"male", id:"R1"});
+    schedule({t:2.6, type:"male", id:"R2"});
+  }
+
+  function smooth(x){ x = Math.min(1,Math.max(0,x)); return x*x*(3-2*x); }
+  function pulseAt(p, t){
+    const x = t - p.t0;
+    if (x < 0) return 0;
+    if (x < p.rise) return p.peak*smooth(x/p.rise);
+    if (x < p.rise+p.hold) return p.peak;
+    const f = (x - p.rise - p.hold)/p.fall;
+    return f < 1 ? p.peak*Math.pow(1-f, 1.6) : 0;
+  }
+  function ledLevel(led, t){
+    let v = 0;
+    for (const p of pulses){ if (p.led === led){ const b = pulseAt(p,t); if (b > v) v = b; } }
+    return v;
+  }
+
+  // ---------------- drawing ----------------
+  const stageCv = document.getElementById("stage"), scopeCv = document.getElementById("scope");
+  const sctx = stageCv.getContext("2d"), octx = scopeCv.getContext("2d");
   function fitCanvas(cv){
     const dpr = Math.min(window.devicePixelRatio||1, 2);
-    const rect = cv.getBoundingClientRect();
-    const w = Math.max(1, Math.round(rect.width*dpr));
-    const h = Math.max(1, Math.round(rect.height*dpr));
+    const r = cv.getBoundingClientRect();
+    const w = Math.max(1, Math.round(r.width*dpr)), h = Math.max(1, Math.round(r.height*dpr));
     if (cv.width!==w || cv.height!==h){ cv.width=w; cv.height=h; }
     return dpr;
   }
-
-  // static-ish starfield (decorative, not animated)
-  let stars = null;
-  function makeStars(w,h){
-    const list = [];
-    for(let i=0;i<40;i++){
-      list.push({x:Math.random()*w, y:Math.random()*h*0.55, r:Math.random()*1.1+.3, a:Math.random()*.5+.25});
-    }
-    return list;
+  const stars = Array.from({length:50},()=>({x:Math.random(),y:Math.random()*0.55,r:Math.random()*1.1+.3,a:Math.random()*.5+.25}));
+  function roundRectPath(ctx,x,y,w,h,r){
+    ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
   }
+  const NAMES = {D:"D dominant", R1:"R1", R2:"R2"};
 
-  // ---- envelope: three-segment fade (0..1) over [0, up+hold+down] ----
-  // Stands in for the male's climb (fade up), hover (hold), and dip (fade down)
-  // since a fixed LED can't fly. Also reused for the female with segment
-  // proportions that read as a quick, sharp flash rather than a slow swell.
-  function smoothstep(x){ x = Math.min(1,Math.max(0,x)); return x*x*(3-2*x); }
-  function segEnvelope(t, up, hold, down){
-    if (t<0) return 0;
-    if (t<up) return smoothstep(t/Math.max(up,1e-6));
-    if (t<up+hold) return 1;
-    if (t<up+hold+down) return 1 - smoothstep((t-up-hold)/Math.max(down,1e-6));
-    return 0;
-  }
-
-  // deterministic PRNG keyed by cycle index, so a given cycle's randomized
-  // male segments are reproducible whenever queried (live playback and the
-  // scope's historical redraw agree, with no need to cache past cycles).
-  function seededRandom(seed){
-    let t = seed + 0x6D2B79F5;
-    t = Math.imul(t ^ (t>>>15), t | 1);
-    t ^= t + Math.imul(t ^ (t>>>7), t | 61);
-    return ((t ^ (t>>>14))>>>0) / 4294967296;
-  }
-  function maleSegsForCycle(cycleIndex){
-    const lerp = r => SEGMENT_MIN + r*(SEGMENT_MAX-SEGMENT_MIN);
-    return {
-      up:   lerp(seededRandom(cycleIndex*3+1)),
-      hold: lerp(seededRandom(cycleIndex*3+2)),
-      down: lerp(seededRandom(cycleIndex*3+3))
-    };
-  }
-
-  // ---- simulation clock ----
-  let playing = !reduceMotion;
-  let speed = 1;
-  let simTime = 0;       // seconds, advances with playback
-
-  // evaluate brightness at absolute time `tt`, for a given effective interval/delay
-  function brightnessAtAbs(tt, interval, delay){
-    const cycleIndex = Math.floor(tt/interval);
-    const t = tt - cycleIndex*interval; // seconds since this cycle's male onset
-    const segs = maleSegsForCycle(cycleIndex);
-    const maleTotal = segs.up+segs.hold+segs.down;
-    const maleB = segEnvelope(t, segs.up, segs.hold, segs.down);
-    // female: quick attack, brief hold, longer settle — reads as a sharp flash
-    const femaleStart = delay;
-    const femaleB = segEnvelope(t-femaleStart, state.femaleDur*0.2, state.femaleDur*0.08, state.femaleDur*0.72);
-    return {maleB, femaleB, cycleIndex, t, interval, segs, maleTotal, femaleStart};
-  }
-
-  function step(ts){
-    if (lastTsStep==null) lastTsStep = ts;
-    const dt = Math.min(0.05, (ts-lastTsStep)/1000) * speed;
-    lastTsStep = ts;
-    if (playing) simTime += dt;
-
-    const interval = effectiveInterval();
-    const delay = effectiveDelay();
-    const b = brightnessAtAbs(simTime, interval, delay);
-
-    drawStage(b);
-    drawScope();
-    updateGaps(b);
-
-    requestAnimationFrame(step);
-  }
-  let lastTsStep = null;
-
-  // Six fixed LED positions inside the jar, as fractions of the jar body's
-  // interior box (0,0 = top-left, 1,1 = bottom-right) — echoes the staggered
-  // hanging heights in DD-7's lid-disc layout. Two are this bench's subjects;
-  // the other four sit dark, present but not part of this exchange.
-  const LED_POINTS = [
-    {x:0.30, y:0.16, role:"idle"},
-    {x:0.68, y:0.22, role:"idle"},
-    {x:0.40, y:0.42, role:"male"},
-    {x:0.66, y:0.50, role:"female"},
-    {x:0.32, y:0.68, role:"idle"},
-    {x:0.58, y:0.80, role:"idle"}
-  ];
-
-  function drawStage(b){
+  function drawStage(){
     const dpr = fitCanvas(stageCv);
     const w = stageCv.width, h = stageCv.height;
     sctx.clearRect(0,0,w,h);
-
-    const groundY = h*0.86;
-
-    // stars
-    if (!stars) stars = makeStars(w,h);
-    sctx.save();
-    stars.forEach(s=>{
-      sctx.globalAlpha = s.a;
-      sctx.fillStyle = "#e9e3d4";
-      sctx.beginPath(); sctx.arc(s.x,s.y,s.r*dpr,0,7); sctx.fill();
-    });
-    sctx.restore();
-
-    // grassy mound the jar sits on
+    stars.forEach(s=>{ sctx.globalAlpha=s.a; sctx.fillStyle="#e9e3d4"; sctx.beginPath(); sctx.arc(s.x*w,s.y*h,s.r*dpr,0,7); sctx.fill(); });
+    sctx.globalAlpha = 1;
+    const groundY = h*0.93;
     sctx.fillStyle = "#0c1a12";
-    sctx.beginPath();
-    sctx.ellipse(w*0.5, groundY+h*0.05, w*0.30, h*0.09, 0, 0, Math.PI*2);
-    sctx.fill();
+    sctx.beginPath(); sctx.ellipse(w*0.5, groundY, Math.min(w*0.32, h*0.5), h*0.05, 0, 0, Math.PI*2); sctx.fill();
 
-    // ---- jar silhouette ----
-    // on a tall (phone) stage, widen the jar so it doesn't read as a test tube
-    const bodyW = Math.min(w*0.5, Math.max(w*0.30, h*0.5)), bodyH = h*0.56;
-    const cx = w*0.5;
-    const bodyTop = groundY - bodyH;
-    const bodyLeft = cx - bodyW/2;
-    const neckW = bodyW*0.52, neckH = h*0.07;
-    const neckTop = bodyTop - neckH;
-    const lidW = neckW*1.22, lidH = h*0.045;
-    const lidTop = neckTop - lidH;
-
-    sctx.save();
-    sctx.globalAlpha = 0.9;
-    // lid
-    sctx.fillStyle = "#9aa0ab";
-    roundRectPath(sctx, cx-lidW/2, lidTop, lidW, lidH, 4*dpr);
-    sctx.fill();
-    // neck
-    sctx.fillStyle = "rgba(205,215,210,.14)";
-    sctx.fillRect(cx-neckW/2, neckTop, neckW, neckH+6);
-    // body (glass)
+    const bodyH = h*0.70, bodyW = Math.min(w*0.42, bodyH*0.68);
+    const cx = w*0.5, bodyTop = groundY - bodyH - h*0.01, bodyLeft = cx - bodyW/2;
+    const lidW = bodyW*0.78, lidH = h*0.045, lidTop = bodyTop - lidH - h*0.01;
+    sctx.fillStyle = "#9aa0ab"; roundRectPath(sctx, cx-lidW/2, lidTop, lidW, lidH, 4*dpr); sctx.fill();
     roundRectPath(sctx, bodyLeft, bodyTop, bodyW, bodyH, bodyW*0.1);
-    sctx.fillStyle = "rgba(205,215,210,.08)";
-    sctx.fill();
-    sctx.lineWidth = 1.5*dpr;
-    sctx.strokeStyle = "rgba(233,227,212,.28)";
-    sctx.stroke();
-    // glass highlight streak
-    sctx.save();
-    sctx.globalAlpha = 0.5;
-    sctx.strokeStyle = "rgba(255,255,255,.18)";
-    sctx.lineWidth = w*0.012;
-    sctx.beginPath();
-    sctx.moveTo(bodyLeft+bodyW*0.18, bodyTop+bodyH*0.1);
-    sctx.lineTo(bodyLeft+bodyW*0.18, bodyTop+bodyH*0.86);
-    sctx.stroke();
-    sctx.restore();
-    sctx.restore();
+    sctx.fillStyle = "rgba(205,215,210,.08)"; sctx.fill();
+    sctx.lineWidth = 1.5*dpr; sctx.strokeStyle = "rgba(233,227,212,.28)"; sctx.stroke();
+    sctx.fillStyle = "#1f3a26";
+    sctx.beginPath(); sctx.ellipse(cx, bodyTop+bodyH*0.95, bodyW*0.44, bodyH*0.06, 0, Math.PI, 0); sctx.fill();
 
-    // ---- fixed LED points ----
-    const interiorX0 = bodyLeft + bodyW*0.14, interiorX1 = bodyLeft + bodyW*0.86;
-    const interiorY0 = bodyTop + bodyH*0.1, interiorY1 = bodyTop + bodyH*0.92;
-    LED_POINTS.forEach(p=>{
-      const x = interiorX0 + p.x*(interiorX1-interiorX0);
-      const y = interiorY0 + p.y*(interiorY1-interiorY0);
-      const bright = p.role==="male" ? b.maleB : p.role==="female" ? b.femaleB : 0;
-      drawLed(sctx, x, y, bright, p.role!=="idle", dpr);
-      if (p.role!=="idle"){
-        sctx.save();
-        sctx.font = `600 ${12*dpr}px 'Archivo', sans-serif`;
-        sctx.fillStyle = "rgba(233,227,212,.7)";
-        sctx.textAlign = x > cx ? "left" : "right";
-        sctx.fillText(p.role==="male"?"MALE":"FEMALE", x + (x>cx? 12:-12)*dpr, y+4*dpr);
-        sctx.restore();
+    const ix0 = bodyLeft + bodyW*0.12, ix1 = bodyLeft + bodyW*0.88;
+    const depth = cm => bodyTop + bodyH*(0.05 + (cm-3)/22*0.82);
+    const label = {1:[],2:[],3:[],4:[],5:[],6:["♀ female"]};
+    Object.values(males).forEach(m => label[m.led].push(NAMES[m.id]));
+
+    for (let i=1;i<=6;i++){
+      const L = LEDS[i], x = ix0 + L.x*(ix1-ix0), y = depth(L.cm);
+      sctx.strokeStyle = "rgba(233,227,212,.16)"; sctx.lineWidth = dpr;
+      sctx.beginPath(); sctx.moveTo(x, bodyTop+2*dpr); sctx.lineTo(x, y); sctx.stroke();
+      const b = ledLevel(i, simTime), isF = i === FEMALE_LED;
+      if (b > 0.01){
+        const gr = (12 + 34*b) * dpr * (isF ? 0.9 : 1);
+        const g = sctx.createRadialGradient(x,y,0,x,y,gr);
+        const col = isF ? "255,231,168" : "255,207,92";
+        g.addColorStop(0, `rgba(${col},${Math.min(1,0.9*b+0.15)})`); g.addColorStop(1, `rgba(${col},0)`);
+        sctx.fillStyle = g; sctx.beginPath(); sctx.arc(x,y,gr,0,7); sctx.fill();
       }
-    });
-  }
-
-  function roundRectPath(ctx,x,y,w,h,r){
-    ctx.beginPath();
-    ctx.moveTo(x+r,y);
-    ctx.arcTo(x+w,y,x+w,y+h,r);
-    ctx.arcTo(x+w,y+h,x,y+h,r);
-    ctx.arcTo(x,y+h,x,y,r);
-    ctx.arcTo(x,y,x+w,y,r);
-    ctx.closePath();
-  }
-
-  function drawLed(ctx, x, y, bright, labeled, dpr){
-    dpr = dpr || 1;
-    const r = (labeled ? 4 : 2.6) * dpr;
-    if (bright > 0.02){
-      const glowR = (16+30*bright) * (labeled?1:0.7) * dpr;
-      const grd = ctx.createRadialGradient(x,y,0,x,y,glowR);
-      grd.addColorStop(0, `rgba(255,207,92,${0.85*bright})`);
-      grd.addColorStop(1, `rgba(255,207,92,0)`);
-      ctx.fillStyle = grd;
-      ctx.beginPath(); ctx.arc(x,y,glowR,0,7); ctx.fill();
+      const k = Math.min(1, b), mix = (c0,c1) => Math.round(c0 + (c1-c0)*k);
+      sctx.fillStyle = `rgb(${mix(0x4a,0xff)},${mix(0x45,0xf3)},${mix(0x36,0xcf)})`;
+      sctx.beginPath(); sctx.arc(x,y,3.2*dpr,0,7); sctx.fill();
+      sctx.font = `600 ${11*dpr}px 'IBM Plex Mono', monospace`;
+      const right = L.x < 0.5;
+      sctx.textAlign = right ? "right" : "left";
+      const tx = x + (right ? -10 : 10)*dpr;
+      sctx.fillStyle = "rgba(233,227,212,.45)"; sctx.fillText(`L${i}`, tx, y - 2*dpr);
+      sctx.fillStyle = label[i].some(n=>n.startsWith("D")) ? "#ffcf5c" : "rgba(233,227,212,.85)";
+      sctx.fillText(label[i].join(" · "), tx, y + 11*dpr);
     }
-    ctx.fillStyle = bright>0.05 ? "#fff3cf" : "#4a4536";
-    ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
   }
 
-  // ---- scope ----
   function drawScope(){
     const dpr = fitCanvas(scopeCv);
     const w = scopeCv.width, h = scopeCv.height;
     octx.clearRect(0,0,w,h);
-
-    const window_s = 12; // seconds visible
-    const tEnd = simTime;
-    const tStart = tEnd - window_s;
-
-    const laneH = h/2;
-    const pad = 10*dpr;
-
-    // gridlines every 1s
-    octx.strokeStyle = "rgba(233,227,212,.12)";
-    octx.fillStyle = "rgba(233,227,212,.4)";
-    octx.font = `${11*dpr}px 'IBM Plex Mono', monospace`;
-    octx.lineWidth = dpr;
-    const firstTick = Math.ceil(tStart);
-    for(let s=firstTick; s<=tEnd; s++){
-      const x = (s-tStart)/window_s*w;
+    const tEnd = simTime, tStart = tEnd - SCOPE_WINDOW;
+    const gutter = 34*dpr, laneH = h/6;
+    octx.strokeStyle = "rgba(233,227,212,.10)"; octx.lineWidth = dpr;
+    for (let s=Math.ceil(tStart); s<=tEnd; s++){
+      const x = gutter + (s-tStart)/SCOPE_WINDOW*(w-gutter);
       octx.beginPath(); octx.moveTo(x,0); octx.lineTo(x,h); octx.stroke();
-      if (Math.abs(s - Math.round(s))<1e-6 && s%1===0){
-        octx.fillText((s%2===0? s+"s":""), x+3*dpr, h-4*dpr);
-      }
     }
-    // lane baselines + labels
-    [0,1].forEach(i=>{
-      const base = i*laneH + laneH - pad;
-      octx.strokeStyle = "rgba(233,227,212,.25)";
-      octx.beginPath(); octx.moveTo(0,base); octx.lineTo(w,base); octx.stroke();
-      octx.fillStyle = "rgba(233,227,212,.55)";
-      octx.font = `600 ${11*dpr}px 'Archivo', sans-serif`;
-      octx.fillText(i===0?"MALE":"FEMALE", 6*dpr, i*laneH+14*dpr);
-    });
-
-    // curves
-    const scopeInterval = effectiveInterval();
-    const scopeDelay = effectiveDelay();
-    function sampleAndDraw(laneIndex, which){
-      const base = laneIndex*laneH + laneH - pad;
-      const amp = laneH - pad*2;
+    for (let i=0;i<6;i++){
+      const led = i+1, base = (i+1)*laneH - 3*dpr, amp = laneH - 8*dpr;
+      octx.strokeStyle = "rgba(233,227,212,.22)";
+      octx.beginPath(); octx.moveTo(gutter,base); octx.lineTo(w,base); octx.stroke();
+      octx.fillStyle = led===FEMALE_LED ? "#ffe7a8" : "rgba(233,227,212,.6)";
+      octx.font = `600 ${10*dpr}px 'IBM Plex Mono', monospace`; octx.textAlign = "left";
+      octx.fillText(led===FEMALE_LED ? "L6 ♀" : `L${led}`, 2*dpr, base - 2*dpr);
       octx.beginPath();
-      const steps = 240;
-      for(let i=0;i<=steps;i++){
-        const tt = tStart + (i/steps)*window_s;
-        if (tt<0) continue;
-        const b = brightnessAtAbs(tt, scopeInterval, scopeDelay);
-        const val = which==="male" ? b.maleB : b.femaleB;
-        const x = (tt-tStart)/window_s*w;
-        const y = base - val*amp;
-        if (i===0) octx.moveTo(x,y); else octx.lineTo(x,y);
+      const steps = 300;
+      for (let k=0;k<=steps;k++){
+        const tt = tStart + k/steps*SCOPE_WINDOW, v = tt < 0 ? 0 : ledLevel(led, tt);
+        const x = gutter + k/steps*(w-gutter), y = base - v*amp;
+        if (k===0) octx.moveTo(x,y); else octx.lineTo(x,y);
       }
-      octx.strokeStyle = "#ffcf5c";
-      octx.lineWidth = 2*dpr;
-      octx.stroke();
-      // soft fill
-      octx.lineTo(w, base); octx.lineTo((tStart<0?( -tStart/window_s*w):0), base);
-      octx.closePath();
-      octx.fillStyle = "rgba(255,207,92,.12)";
-      octx.fill();
+      octx.strokeStyle = led===FEMALE_LED ? "#ffe7a8" : "#ffcf5c";
+      octx.lineWidth = 1.6*dpr; octx.stroke();
+      octx.lineTo(w,base); octx.lineTo(gutter,base); octx.closePath();
+      octx.fillStyle = "rgba(255,207,92,.10)"; octx.fill();
     }
-    sampleAndDraw(0,"male");
-    sampleAndDraw(1,"female");
-
-    // playhead
-    const px = w-2;
-    octx.strokeStyle = "rgba(233,227,212,.5)";
-    octx.beginPath(); octx.moveTo(px,0); octx.lineTo(px,h); octx.stroke();
+    octx.fillStyle = "rgba(233,227,212,.4)"; octx.font = `${10*dpr}px 'IBM Plex Mono', monospace`;
+    octx.textAlign = "right"; octx.fillText("now", w-3*dpr, 11*dpr);
+    octx.textAlign = "left";  octx.fillText(`−${SCOPE_WINDOW}s`, gutter+3*dpr, 11*dpr);
   }
 
-  function updateGaps(b){
-    // true silent (dark) durations, as distinct from the onset-to-onset
-    // "response delay" shown in the firmware export panel below. If the
-    // male's randomized total runs long enough to still be fading when the
-    // female answers, the gap reads 0 (they overlap) rather than going negative.
-    const darkAfterMale = Math.max(0, b.femaleStart - b.maleTotal);
-    const femaleEnd = b.femaleStart + state.femaleDur;
-    const darkAfterFemale = Math.max(0, b.interval - femaleEnd);
-    document.getElementById("gapMF").textContent = Math.round(darkAfterMale*1000) + " ms";
-    document.getElementById("gapFM").textContent = Math.round(darkAfterFemale*1000) + " ms";
+  // ---------------- loop ----------------
+  let lastTs = null;
+  function frame(ts){
+    if (lastTs == null) lastTs = ts;
+    const dt = Math.min(0.05, (ts-lastTs)/1000) * speed;
+    lastTs = ts;
+    if (playing){
+      const target = simTime + dt;
+      while (events.length && events[0].t <= target){ const ev = events.shift(); simTime = ev.t; handle(ev); }
+      simTime = target;
+      pulses = pulses.filter(p => p.t0 + p.rise + p.hold + p.fall > simTime - SCOPE_WINDOW - 1);
+    }
+    drawStage(); drawScope();
+    requestAnimationFrame(frame);
   }
 
-  // ---- transport ----
   const playBtn = document.getElementById("playBtn");
-  function syncPlayBtn(){ playBtn.textContent = playing ? "❚❚" : "▶"; }
-  syncPlayBtn();
-  playBtn.addEventListener("click", ()=>{ playing=!playing; syncPlayBtn(); });
-
+  const syncPlay = () => { playBtn.textContent = playing ? "❚❚" : "▶"; };
+  playBtn.addEventListener("click", ()=>{ playing = !playing; syncPlay(); });
+  document.getElementById("restartBtn").addEventListener("click", restart);
   document.querySelectorAll(".speedgroup button").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       document.querySelectorAll(".speedgroup button").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-      speed = parseFloat(btn.dataset.speed);
+      btn.classList.add("active"); speed = parseFloat(btn.dataset.speed);
     });
   });
 
-  window.addEventListener("resize", ()=>{ stars=null; });
-
-  requestAnimationFrame(step);
+  Object.keys(params).forEach(refreshControl);
+  refreshDerived();
+  syncPlay();
+  restart();
+  requestAnimationFrame(frame);
 })();
 </script>
