@@ -184,7 +184,7 @@
         <h2>Six-lane flash scope</h2>
         <div class="gaps">
           <span>dominant cycle: <b id="cadNow">—</b></span>
-          <span>female delay: <b id="delNow">—</b></span>
+          <span>female answer: <b id="delNow">—</b></span>
         </div>
       </div>
       <canvas id="scope" width="960" height="252" aria-label="Brightness of each LED over the last 15 seconds"></canvas>
@@ -210,7 +210,7 @@
       <ul class="notes">
         <li><strong>Male flash.</strong> A single long yellow flash, repeated every 5–7 s on a typical evening and as fast as ~3 s on hot nights (Edmunds 1963). The story uses fixed 4, 5 and 6 s cadences so each male is easy to tell apart.</li>
         <li><strong>The dominant male</strong> has the longest flash. Females of single-flash species favor longer flashes. Here the rivals flash 0.4 s and the dominant male 0.8 s plus an extra 0.25 s on his fade.</li>
-        <li><strong>Female answer.</strong> One dim flash after a species-specific delay of about 1–2 s (one measurement: 2.1 ± 0.2 s), much dimmer than a male's.</li>
+        <li><strong>Female answer.</strong> One dim flash, much dimmer than a male's. In the field she answers after a species-specific delay of about 1–2 s (one measurement: 2.1 ± 0.2 s). For the jar, her answer is timed so it ends exactly when the dominant male's fade ends: a 0.51 s flash starting 0.54 s after his. This is a deliberate story choice, not the field timing.</li>
         <li><strong>Rivals and approach.</strong> The male homes in on her answers and lands nearby, and rival males converge on an answering female. The rival interlude, cycle counts and LED positions in this story are design choices for the jar, not measured behavior.</li>
         <li><a href="https://academic.oup.com/aesa/article-abstract/56/5/716/76605" target="_blank" rel="noopener">Edmunds 1963 — temperature and flash interval</a></li>
         <li><a href="https://www.fireflyatlas.org/focal-species/big-dipper-firefly" target="_blank" rel="noopener">Firefly Atlas — Big Dipper Firefly</a></li>
@@ -236,6 +236,11 @@
   const DOM_FLASH = 0.80;              // maximum male flash (s)
   const DOM_EXTRA_FADE = 0.25;         // extra fade so the dominant male stands out
   const FEMALE_LED = 6;
+  // Female answer: fixed shape; timed so it ENDS exactly when the dominant male's fade ends.
+  const F_RISE = 0.06, F_HOLD = 0.05, F_FALL = 0.40;
+  const F_DUR = F_RISE + F_HOLD + F_FALL;                       // 0.51 s
+  const DOM_TOTAL = DOM_FLASH + DOM_EXTRA_FADE;                 // 0.80*(0.3+0.1+0.6) + 0.25 = 1.05 s
+  const F_ONSET = DOM_TOTAL - F_DUR;                            // she starts 0.54 s after his onset
   const HOME = {D:2, R1:1, R2:3};      // starting LEDs, upper jar
   const MID_LED = 4, LANDED_LED = 5;
   const SCOPE_WINDOW = 15;
@@ -249,9 +254,9 @@
   const STEPS = [
     null,
     {by:"D",  count:3, title:"Three males patrol", text:"Three males flash high in the jar. The dominant male's flash is longer, with a slow fade."},
-    {by:"D",  count:2, title:"She answers him", text:"The female begins answering the dominant male, a dim flash about 2 s after each of his."},
+    {by:"D",  count:2, title:"She answers him", text:"The female begins answering the dominant male: a dim flash that fades out together with his."},
     {by:"R2", count:3, title:"A rival moves in", text:"A rival drops to the middle of the jar. The female goes quiet while the others keep flashing."},
-    {by:"D",  count:3, title:"The rival retreats", text:"The rival climbs back. Everyone is back where they started, and she stays silent."},
+    {by:"D",  count:1, title:"The rival retreats", text:"The rival climbs back. Everyone is back where they started for one cycle, and she stays silent."},
     {by:"D",  count:3, title:"She answers again", text:"The female answers the dominant male again."},
     {by:"D",  count:3, title:"He descends", text:"The dominant male drops to the middle of the jar. She keeps answering; the rivals keep flashing."},
     {by:"D",  count:2, title:"He lands", text:"He lands on the low LED beside her. They keep trading flashes."},
@@ -260,7 +265,6 @@
 
   // ---------------- parameters ----------------
   const params = {
-    delay: { name:"Female response delay", min:0.8, max:3.0, doc:[1.0,2.2], def:2.1, unit:"s", approx:false, step:0.05 },
     gain:  { name:"Female brightness", min:5, max:40, doc:[8,15], def:12, unit:"%", approx:true, step:1 }
   };
   const state = {domPeriod:6};
@@ -308,7 +312,7 @@
     document.getElementById("read-dom").textContent = `${P.D} s`;
     document.getElementById("hint-dom").textContent = `Rivals: LED 1 every ${P.R1} s, LED 3 every ${P.R2} s (the LED 3 rival is the one who moves in). Changing this restarts the story.`;
     document.getElementById("cadNow").textContent = `${P.D} s`;
-    document.getElementById("delNow").textContent = `${state.delay.toFixed(2)} s`;
+    document.getElementById("delNow").textContent = `starts +${F_ONSET.toFixed(2)} s, ends with his fade`;
     refreshExport();
   }
   function refreshExport(){
@@ -326,7 +330,8 @@ ${C("const")} R2_PERIOD_MS        = ${V(P.R2*1000)};
 ${C("const")} RIVAL_FLASH_MS      = ${V(RIVAL_FLASH*1000)};
 ${C("const")} DOM_FLASH_MS        = ${V(DOM_FLASH*1000)};
 ${C("const")} DOM_EXTRA_FADE_MS   = ${V(DOM_EXTRA_FADE*1000)};
-${C("const")} ANSWER_DELAY_MS     = ${V(Math.round(state.delay*1000))}; ${C("// from male peak")}
+${C("const")} FEMALE_FLASH_MS     = ${V(Math.round(F_DUR*1000))};
+${C("const")} FEMALE_ONSET_MS     = ${V(Math.round(F_ONSET*1000))}; ${C("// after dominant onset; she ends when his fade ends")}
 ${C("const")} FEMALE_GAIN         = ${V((state.gain/100).toFixed(2))};
 ${C("// cycles per step 1..8 (step 3 counts the rival's cycles)")}
 ${C("const")} STEP_CYCLES[]       = { ${V(STEPS.slice(1).map(s=>s.count).join(", "))} };`;
@@ -379,7 +384,7 @@ ${C("const")} STEP_CYCLES[]       = { ${V(STEPS.slice(1).map(s=>s.count).join(",
     addPulse(m.led, t, rise, hold, fall, 1);
     return t + rise;    // peak time
   }
-  function emitFemale(t){ addPulse(FEMALE_LED, t, 0.06, 0.05, 0.40, state.gain/100); }
+  function emitFemale(t){ addPulse(FEMALE_LED, t, F_RISE, F_HOLD, F_FALL, state.gain/100); }
 
   function handle(ev){
     if (ev.epoch !== epoch) return;
@@ -390,14 +395,14 @@ ${C("const")} STEP_CYCLES[]       = { ${V(STEPS.slice(1).map(s=>s.count).join(",
       const dark = (m.id === "D" && step === 8);
       let pk = null;
       if (!dark) pk = emitMale(m, t);
-      if (m.id === "D" && !dark && femaleAnswers()) schedule({t: pk + state.delay, type:"female"});
+      if (m.id === "D" && !dark && femaleAnswers()) schedule({t: t + F_ONSET, type:"female"});
       // count cycles for the current step
       if (STEPS[step].by === m.id && !pendingAdvance){
         stepCount++;
         if (stepCount >= STEPS[step].count){
           // finish the cycle (his flash + her answer) before the next step begins
           pendingAdvance = true;
-          schedule({t: t + Math.min(state.delay + 0.6, m.period - 0.3), type:"advance"});
+          schedule({t: t + Math.min(DOM_TOTAL + 0.3, m.period - 0.3), type:"advance"});
         }
       }
       return;
@@ -409,7 +414,7 @@ ${C("const")} STEP_CYCLES[]       = { ${V(STEPS.slice(1).map(s=>s.count).join(",
     }
     if (ev.type === "female"){
       emitFemale(t);
-      log(`Female answers (+${state.delay.toFixed(1)} s)`, true);
+      log(`Female answers, ending with his fade`, true);
     }
   }
 
