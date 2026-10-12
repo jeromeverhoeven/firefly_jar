@@ -172,9 +172,17 @@ All behavior is set by named constants at the top of the sketch, so it can be tu
 | `TOY_SHOW_S` / `TOY_MAX_S` | 60 / 300 | s | [DD-5](./DD-5-Glow-Cycle.md) |
 | `LDR_SAMPLE_S` | 10 | s | [DD-1](./DD-1-Trigger-Mechanism.md) |
 | `LDR_DARK` / `LDR_LIGHT` | set in Destroy | ADC counts (hysteresis pair) | [DD-1](./DD-1-Trigger-Mechanism.md) |
-| `FLASH_PERIOD_S` | 6 ± 1 | s | [DD-9](./DD-9-Glow-Pattern.md) |
-| `FADE_MS` | 300-800 | ms | [DD-9](./DD-9-Glow-Pattern.md) |
-| `ANSWER_DELAY_MS` | 1000-2000 | ms | [DD-9](./DD-9-Glow-Pattern.md) |
+| `FLASH_PERIOD_S` | 5.9 ± 0.6 | s | [DD-9](./DD-9-Glow-Pattern.md) addendum, [6080015](../Develop/DevNote-Courtship-Sequence.md) |
+| `PULSE_RISE_MS` / `PULSE_FALL_MS` | 150 / 350 | ms | Male and female flash shape; supersedes `FADE_MS`. [6080015](../Develop/DevNote-Courtship-Sequence.md) |
+| `J_DIP_LEVEL` | 0.30 | fraction | Lower LED's peak during the male's dip. [6080015](../Develop/DevNote-Courtship-Sequence.md) |
+| `J_HANDOFF_MS` | 100 | ms | Delay before the upper LED starts rising. [6080015](../Develop/DevNote-Courtship-Sequence.md) |
+| `LANDING_LEVEL` | 0.60 | fraction | Final single-LED "landing" flash ending a courtship. [6080015](../Develop/DevNote-Courtship-Sequence.md) |
+| `FEMALE_LED` | 6 | LED index | Always the lowest-hanging LED. [6080015](../Develop/DevNote-Courtship-Sequence.md) |
+| `FEMALE_GAIN` | 0.10 | fraction | Female peak relative to male; check against actual LED/resistor once the prototype is lit. [6080015](../Develop/DevNote-Courtship-Sequence.md) |
+| `ANSWER_DELAY_MS` | 2100 ± 200 | ms | Measured from the courting male's **peak**, not onset. [6080015](../Develop/DevNote-Courtship-Sequence.md) |
+| `MALE_SPACING_MIN_S` | 3.5 | s | Minimum time between one LED's own flashes. [6080015](../Develop/DevNote-Courtship-Sequence.md) |
+| `COURTSHIP_EVERY_S` | 60-120 | s | Random interval between courtship micro-events inside Meadow. [6080015](../Develop/DevNote-Courtship-Sequence.md) |
+| `PAIR_REST_S` | 15-30 | s | Rest after a courtship exchange ends. [6080015](../Develop/DevNote-Courtship-Sequence.md) |
 | `SYNC_CONVERGE_S` | 60 | s | [DD-9](./DD-9-Glow-Pattern.md) |
 | `CLAP_MODE_S` | 120 | s | [DD-1](./DD-1-Trigger-Mechanism.md) |
 | `IMU_WAKE_THRESHOLD` | set in Destroy (gentle tap) | mg | [DD-1](./DD-1-Trigger-Mechanism.md) |

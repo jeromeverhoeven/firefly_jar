@@ -96,6 +96,7 @@
   #stage{
     display:block;
     width:100%;
+    max-width:100%;
     aspect-ratio:3/1;
   }
   .transport{
@@ -271,6 +272,7 @@
   .pill.match{background:rgba(143,174,124,.2);color:var(--match);border:1px solid rgba(143,174,124,.45);}
   .pill.outside{background:rgba(192,95,79,.2);color:var(--outside);border:1px solid rgba(192,95,79,.45);}
   .param.approx .doc-range{font-style:italic;}
+  .hint{font-size:.72rem;color:var(--ink-dim);line-height:1.4;}
 
   /* ---------- Footer ---------- */
   .footer-grid{
@@ -279,6 +281,7 @@
     gap:.9rem;
   }
   @media (max-width:680px){ .footer-grid{grid-template-columns:1fr;} }
+  .footer-grid > *, .controls > *{min-width:0;}
   .card{
     border:1px solid var(--panel-edge);
     background:var(--panel);
@@ -310,6 +313,21 @@
   pre.code .c{color:var(--ink-dim);}
   pre.code .v{color:var(--glow);}
 
+  /* ---------- Phone width: taller stage, controls below it ---------- */
+  @media (max-width:680px){
+    .wrap{padding-block:1.5rem 2.5rem;}
+    #stage{aspect-ratio:1/1;}
+    .transport{
+      position:static;
+      margin:.6rem;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .scope-head{flex-direction:column;align-items:flex-start;gap:.35rem;}
+    .gaps{flex-wrap:wrap;gap:.2rem 1rem;}
+    #scope{height:170px;}
+  }
+
   @media (prefers-reduced-motion: reduce){
     .btn, input[type=range]::-webkit-slider-thumb{transition:none;}
   }
@@ -321,7 +339,7 @@
     <div class="eyebrow">Firefly Jar · Develop · DD-9 Glow Pattern reference</div>
     <h1>Big Dipper Dialogue</h1>
     <div class="binomial">Photinus pyralis — courtship flash exchange</div>
-    <div class="dek">A visual timing bench for the male's J-shaped flash, the female's answer, and the dark intervals between — tuned against field-recorded ranges, with live export to the jar's firmware constants.</div>
+    <div class="dek">A visual timing bench for the dialogue our fixed LEDs will actually perform: the male's rising-holding-fading glow standing in for his up-and-down flight, the female's sharp answer, and the dark intervals between — with live export to the jar's firmware constants.</div>
     <hr>
   </header>
 
@@ -355,9 +373,9 @@
     <div class="card">
       <h3>Field notes</h3>
       <ul class="notes">
-        <li>Male flash: a single yellow, J-shaped flash, <strong>0.6–0.8&nbsp;s</strong>, repeated every <strong>5–7&nbsp;s</strong>, thrown during a rising hook at the end of a dipping flight — the "big dipper" flight that gives the species its common name.</li>
-        <li>Female: answers from a stationary perch, <strong>1–2&nbsp;s</strong> after the male's flash (commonly cited near 2.0–2.2&nbsp;s at 21°C). This delay is species-specific — get it wrong and the dialogue breaks down.</li>
-        <li>Female flash duration is less precisely documented in the sources below; treated here as an estimate.</li>
+        <li><strong>In the field:</strong> the male throws a single yellow flash while flying a rising-then-dipping "J" path, repeated every <strong>5–7&nbsp;s</strong> — the "big dipper" flight that gives the species its common name.</li>
+        <li><strong>In the jar:</strong> our LEDs are fixed points, not wings — there's no up-and-down flight to borrow. Instead, each male display is a <strong>fade up, hold, then fade down</strong>, standing in for the climb and dip of his flight. Each of those three segments is independently randomized <strong>1–2&nbsp;s</strong>, so no two displays read identically.</li>
+        <li><strong>Female:</strong> answers from a stationary perch with a <strong>sharp 0.5&nbsp;s</strong> flash, timed <strong>2&nbsp;s after the male's display begins</strong> (field-documented response delay is commonly cited near 1–2.2&nbsp;s after his flash). This delay is species-specific — get it wrong and the dialogue breaks down.</li>
         <li>Flash rate is known to quicken in warmer air; the temperature control applies an illustrative scaling only — no precise rate law is sourced here.</li>
         <li><a href="https://en.wikipedia.org/wiki/Photinus_pyralis" target="_blank" rel="noopener">Wikipedia — Photinus pyralis</a></li>
         <li><a href="https://www.fireflyatlas.org/focal-species/big-dipper-firefly" target="_blank" rel="noopener">Firefly Atlas — Big Dipper Firefly</a></li>
@@ -378,12 +396,16 @@
 
   const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // Each male display's fade-up / hold / fade-down segment is independently
+  // randomized in this range (fixed per JP's call — not a field-literature
+  // figure, so it's not exposed as a tunable slider).
+  const SEGMENT_MIN = 1.0, SEGMENT_MAX = 2.0;
+
   // ---- parameter definitions: slider range, documented range, default, unit ----
   const params = {
-    maleDur:   { name:"Male flash duration",   min:0.3, max:1.2, doc:[0.6,0.8],  def:0.7,  unit:"s",  approx:false },
-    interval:  { name:"Male flash interval",   min:3.0, max:10.0,doc:[5,7],      def:6.0,  unit:"s",  approx:false },
+    interval:  { name:"Cycle interval",        min:4.0, max:12.0,doc:[5,7],      def:7.0,  unit:"s",  approx:false },
     delay:     { name:"Female response delay", min:0.5, max:3.5, doc:[1.0,2.2], def:2.0,  unit:"s",  approx:false },
-    femaleDur: { name:"Female flash duration", min:0.2, max:1.2, doc:[0.4,0.8], def:0.6,  unit:"s",  approx:true  },
+    femaleDur: { name:"Female flash duration", min:0.2, max:1.0, doc:[0.3,0.6], def:0.5,  unit:"s",  approx:true  },
     tempF:     { name:"Air temperature",       min:50,  max:90,  doc:[65,80],   def:70,   unit:"°F", approx:true  }
   };
   const state = {};
@@ -409,6 +431,7 @@
         <span class="doc-range">${p.approx?"~":""}documented ${p.doc[0]}–${p.doc[1]}${p.unit}</span>
         <span class="pill" id="pill-${key}"></span>
       </div>
+      ${key==="interval" ? `<div class="hint">male's 3 segments randomize 1–2s each (up to 6s total) — if shorter than that, his fade is cut short</div>` : ""}
     `;
     controlsEl.appendChild(card);
     document.getElementById(`in-${key}`).addEventListener("input", e => {
@@ -447,10 +470,13 @@
     const el = document.getElementById("fwExport");
     el.innerHTML =
 `<span class="c">// Spec-2 Data Model constants, from this bench @ ${state.tempF.toFixed(0)}°F</span>
-<span class="c">const</span> FLASH_PERIOD_S   <span class="c">=</span> <span class="v">${interval.toFixed(1)}</span>;   <span class="c">// male flash interval</span>
-<span class="c">const</span> FADE_MS          <span class="c">=</span> <span class="v">${Math.round(state.maleDur*1000)}</span>; <span class="c">// male flash duration</span>
-<span class="c">const</span> ANSWER_DELAY_MS  <span class="c">=</span> <span class="v">${Math.round(delay*1000)}</span>; <span class="c">// female response delay</span>
-<span class="c">const</span> FEMALE_FADE_MS   <span class="c">=</span> <span class="v">${Math.round(state.femaleDur*1000)}</span>;  <span class="c">// female flash duration (est.)</span>`;
+<span class="c">const</span> FLASH_PERIOD_S     <span class="c">=</span> <span class="v">${interval.toFixed(1)}</span>;   <span class="c">// cycle interval</span>
+<span class="c">const</span> FADE_UP_MIN_MS    <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MIN*1000)}</span>; <span class="c">const</span> FADE_UP_MAX_MS    <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MAX*1000)}</span>;
+<span class="c">const</span> HOLD_MIN_MS       <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MIN*1000)}</span>; <span class="c">const</span> HOLD_MAX_MS       <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MAX*1000)}</span>;
+<span class="c">const</span> FADE_DOWN_MIN_MS  <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MIN*1000)}</span>; <span class="c">const</span> FADE_DOWN_MAX_MS  <span class="c">=</span> <span class="v">${Math.round(SEGMENT_MAX*1000)}</span>;
+<span class="c">// ^ each randomized per display — new additions, not yet in Spec-2's Data Model</span>
+<span class="c">const</span> ANSWER_DELAY_MS    <span class="c">=</span> <span class="v">${Math.round(delay*1000)}</span>; <span class="c">// female response delay, from male onset</span>
+<span class="c">const</span> FEMALE_FADE_MS     <span class="c">=</span> <span class="v">${Math.round(state.femaleDur*1000)}</span>;  <span class="c">// female flash duration (est.)</span>`;
   }
   refreshExport();
 
@@ -481,95 +507,92 @@
     return list;
   }
 
-  // ---- envelope: smooth bump (0..1) over [0,dur] ----
-  function envelope(t, dur){
-    if (t<0 || t>dur) return 0;
-    const x = t/dur;
-    // smoothstep up then down, slight gamma to feel more "alive"
-    const s = x<0.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2;
-    return Math.pow(Math.sin(Math.PI*s), 0.9);
+  // ---- envelope: three-segment fade (0..1) over [0, up+hold+down] ----
+  // Stands in for the male's climb (fade up), hover (hold), and dip (fade down)
+  // since a fixed LED can't fly. Also reused for the female with segment
+  // proportions that read as a quick, sharp flash rather than a slow swell.
+  function smoothstep(x){ x = Math.min(1,Math.max(0,x)); return x*x*(3-2*x); }
+  function segEnvelope(t, up, hold, down){
+    if (t<0) return 0;
+    if (t<up) return smoothstep(t/Math.max(up,1e-6));
+    if (t<up+hold) return 1;
+    if (t<up+hold+down) return 1 - smoothstep((t-up-hold)/Math.max(down,1e-6));
+    return 0;
+  }
+
+  // deterministic PRNG keyed by cycle index, so a given cycle's randomized
+  // male segments are reproducible whenever queried (live playback and the
+  // scope's historical redraw agree, with no need to cache past cycles).
+  function seededRandom(seed){
+    let t = seed + 0x6D2B79F5;
+    t = Math.imul(t ^ (t>>>15), t | 1);
+    t ^= t + Math.imul(t ^ (t>>>7), t | 61);
+    return ((t ^ (t>>>14))>>>0) / 4294967296;
+  }
+  function maleSegsForCycle(cycleIndex){
+    const lerp = r => SEGMENT_MIN + r*(SEGMENT_MAX-SEGMENT_MIN);
+    return {
+      up:   lerp(seededRandom(cycleIndex*3+1)),
+      hold: lerp(seededRandom(cycleIndex*3+2)),
+      down: lerp(seededRandom(cycleIndex*3+3))
+    };
   }
 
   // ---- simulation clock ----
   let playing = !reduceMotion;
   let speed = 1;
   let simTime = 0;       // seconds, advances with playback
-  let lastTs = null;
-  let cycleCount = 0;
-  let lastCycleIndex = -1;
-  let maleHomeFrac = 0.12;     // fraction across the meadow, starts far from female
-  const femaleFrac = 0.74;
-  let reunionFlash = 0;        // 0..1 pulse when male reaches female
 
-  function brightnessAt(t){
-    // t: seconds since the start of the CURRENT male cycle (0 = cycle start).
-    // The male flash anchors the cycle at t=0; the female answers `delay` later,
-    // in the same cycle's remaining dark time. (Earlier revision anchored the
-    // male flash at the END of the cycle, which pushed the female's flash past
-    // the cycle boundary for almost every realistic delay/interval combination —
-    // she never lit up. Anchoring at t=0 leaves the rest of the period for her
-    // answer and the dark gap before the next male flash.)
-    const interval = effectiveInterval();
-    const delay = effectiveDelay();
-    const maleStart = 0;
-    const maleB = envelope(t - maleStart, state.maleDur);
-    const femaleStart = Math.min(delay, Math.max(state.maleDur, interval - state.femaleDur));
-    const femaleB = envelope(t - femaleStart, state.femaleDur);
-    return {maleB, femaleB, interval, maleStart, femaleStart};
+  // evaluate brightness at absolute time `tt`, for a given effective interval/delay
+  function brightnessAtAbs(tt, interval, delay){
+    const cycleIndex = Math.floor(tt/interval);
+    const t = tt - cycleIndex*interval; // seconds since this cycle's male onset
+    const segs = maleSegsForCycle(cycleIndex);
+    const maleTotal = segs.up+segs.hold+segs.down;
+    const maleB = segEnvelope(t, segs.up, segs.hold, segs.down);
+    // female: quick attack, brief hold, longer settle — reads as a sharp flash
+    const femaleStart = delay;
+    const femaleB = segEnvelope(t-femaleStart, state.femaleDur*0.2, state.femaleDur*0.08, state.femaleDur*0.72);
+    return {maleB, femaleB, cycleIndex, t, interval, segs, maleTotal, femaleStart};
   }
 
   function step(ts){
-    if (lastTs==null) lastTs = ts;
-    const dt = Math.min(0.05, (ts-lastTs)/1000) * speed;
-    lastTs = ts;
+    if (lastTsStep==null) lastTsStep = ts;
+    const dt = Math.min(0.05, (ts-lastTsStep)/1000) * speed;
+    lastTsStep = ts;
     if (playing) simTime += dt;
 
     const interval = effectiveInterval();
-    const cycleIndex = Math.floor(simTime/interval);
-    const t = simTime - cycleIndex*interval;
+    const delay = effectiveDelay();
+    const b = brightnessAtAbs(simTime, interval, delay);
 
-    if (cycleIndex !== lastCycleIndex){
-      lastCycleIndex = cycleIndex;
-      // advance the male's "home" position toward the female each new cycle
-      const dist = femaleFrac - maleHomeFrac;
-      if (Math.abs(dist) > 0.015){
-        maleHomeFrac += dist*0.35;
-      } else {
-        reunionFlash = 1;
-        maleHomeFrac = 0.12; // reset for a fresh approach
-      }
-    }
-    reunionFlash = Math.max(0, reunionFlash - dt*0.6);
-
-    const b = brightnessAt(t);
-    drawStage(b, t);
+    drawStage(b);
     drawScope();
     updateGaps(b);
 
     requestAnimationFrame(step);
   }
+  let lastTsStep = null;
 
-  function drawStage(b, t){
+  // Six fixed LED positions inside the jar, as fractions of the jar body's
+  // interior box (0,0 = top-left, 1,1 = bottom-right) — echoes the staggered
+  // hanging heights in DD-7's lid-disc layout. Two are this bench's subjects;
+  // the other four sit dark, present but not part of this exchange.
+  const LED_POINTS = [
+    {x:0.30, y:0.16, role:"idle"},
+    {x:0.68, y:0.22, role:"idle"},
+    {x:0.40, y:0.42, role:"male"},
+    {x:0.66, y:0.50, role:"female"},
+    {x:0.32, y:0.68, role:"idle"},
+    {x:0.58, y:0.80, role:"idle"}
+  ];
+
+  function drawStage(b){
     const dpr = fitCanvas(stageCv);
     const w = stageCv.width, h = stageCv.height;
     sctx.clearRect(0,0,w,h);
 
-    const groundY = h*0.80;
-
-    // treeline silhouette
-    sctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--meadow-high').trim() || "#132419";
-    sctx.beginPath();
-    sctx.moveTo(0,groundY);
-    for(let x=0;x<=w;x+=w/18){
-      const bumpH = (Math.sin(x*0.013)+1.4)*h*0.045;
-      sctx.lineTo(x, groundY-bumpH);
-    }
-    sctx.lineTo(w,groundY); sctx.lineTo(w,h); sctx.lineTo(0,h); sctx.closePath();
-    sctx.fill();
-
-    // ground
-    sctx.fillStyle = "#070f0b";
-    sctx.fillRect(0, groundY, w, h-groundY);
+    const groundY = h*0.86;
 
     // stars
     if (!stars) stars = makeStars(w,h);
@@ -577,71 +600,89 @@
     stars.forEach(s=>{
       sctx.globalAlpha = s.a;
       sctx.fillStyle = "#e9e3d4";
-      sctx.beginPath(); sctx.arc(s.x,s.y,s.r,0,7); sctx.fill();
+      sctx.beginPath(); sctx.arc(s.x,s.y,s.r*dpr,0,7); sctx.fill();
     });
     sctx.restore();
 
-    // ---- male flight path: dip then hook (the "J"), homing toward the female over cycles ----
-    // The flash fires at the START of each cycle (t=0). The dip-and-hook buildup
-    // happens during the dark tail of the PREVIOUS cycle, i.e. as t approaches
-    // `interval` (the next flash). So: lit during [0,maleDur); cruising in the
-    // middle; building the hook during the last `hookWindow` seconds before the
-    // cycle wraps.
-    const interval = b.interval;
-    const hookWindow = Math.min(interval*0.45, 1.6);
-    const timeToNextFlash = interval - t;
-    let mx, my;
-    const baseY = h*0.30;
-    const hookTopY = h*0.14;
-    const cruiseX = maleHomeFrac*w;
+    // grassy mound the jar sits on
+    sctx.fillStyle = "#0c1a12";
+    sctx.beginPath();
+    sctx.ellipse(w*0.5, groundY+h*0.05, w*0.30, h*0.09, 0, 0, Math.PI*2);
+    sctx.fill();
 
-    if (t < state.maleDur){
-      // lit, at the top of the hook, gliding slightly forward
-      const k = t/Math.max(state.maleDur,0.001);
-      mx = cruiseX + (0.05 + k*0.015)*w;
-      my = hookTopY - Math.sin(k*Math.PI)*h*0.01;
-    } else if (timeToNextFlash < hookWindow){
-      // dip then hook upward into the next flash
-      const f = 1 - timeToNextFlash/hookWindow; // 0..1
-      if (f < 0.6){
-        const k = f/0.6;
-        mx = cruiseX + k*w*0.02;
-        my = baseY + k*h*0.16; // dip downward
-      } else {
-        const k = (f-0.6)/0.4;
-        mx = cruiseX + (0.02 + k*0.03)*w;
-        my = (baseY+h*0.16) - k*(baseY+h*0.16-hookTopY); // hook up sharply
+    // ---- jar silhouette ----
+    // on a tall (phone) stage, widen the jar so it doesn't read as a test tube
+    const bodyW = Math.min(w*0.5, Math.max(w*0.30, h*0.5)), bodyH = h*0.56;
+    const cx = w*0.5;
+    const bodyTop = groundY - bodyH;
+    const bodyLeft = cx - bodyW/2;
+    const neckW = bodyW*0.52, neckH = h*0.07;
+    const neckTop = bodyTop - neckH;
+    const lidW = neckW*1.22, lidH = h*0.045;
+    const lidTop = neckTop - lidH;
+
+    sctx.save();
+    sctx.globalAlpha = 0.9;
+    // lid
+    sctx.fillStyle = "#9aa0ab";
+    roundRectPath(sctx, cx-lidW/2, lidTop, lidW, lidH, 4*dpr);
+    sctx.fill();
+    // neck
+    sctx.fillStyle = "rgba(205,215,210,.14)";
+    sctx.fillRect(cx-neckW/2, neckTop, neckW, neckH+6);
+    // body (glass)
+    roundRectPath(sctx, bodyLeft, bodyTop, bodyW, bodyH, bodyW*0.1);
+    sctx.fillStyle = "rgba(205,215,210,.08)";
+    sctx.fill();
+    sctx.lineWidth = 1.5*dpr;
+    sctx.strokeStyle = "rgba(233,227,212,.28)";
+    sctx.stroke();
+    // glass highlight streak
+    sctx.save();
+    sctx.globalAlpha = 0.5;
+    sctx.strokeStyle = "rgba(255,255,255,.18)";
+    sctx.lineWidth = w*0.012;
+    sctx.beginPath();
+    sctx.moveTo(bodyLeft+bodyW*0.18, bodyTop+bodyH*0.1);
+    sctx.lineTo(bodyLeft+bodyW*0.18, bodyTop+bodyH*0.86);
+    sctx.stroke();
+    sctx.restore();
+    sctx.restore();
+
+    // ---- fixed LED points ----
+    const interiorX0 = bodyLeft + bodyW*0.14, interiorX1 = bodyLeft + bodyW*0.86;
+    const interiorY0 = bodyTop + bodyH*0.1, interiorY1 = bodyTop + bodyH*0.92;
+    LED_POINTS.forEach(p=>{
+      const x = interiorX0 + p.x*(interiorX1-interiorX0);
+      const y = interiorY0 + p.y*(interiorY1-interiorY0);
+      const bright = p.role==="male" ? b.maleB : p.role==="female" ? b.femaleB : 0;
+      drawLed(sctx, x, y, bright, p.role!=="idle", dpr);
+      if (p.role!=="idle"){
+        sctx.save();
+        sctx.font = `600 ${12*dpr}px 'Archivo', sans-serif`;
+        sctx.fillStyle = "rgba(233,227,212,.7)";
+        sctx.textAlign = x > cx ? "left" : "right";
+        sctx.fillText(p.role==="male"?"MALE":"FEMALE", x + (x>cx? 12:-12)*dpr, y+4*dpr);
+        sctx.restore();
       }
-    } else {
-      // cruising, gentle bob
-      mx = cruiseX + Math.sin(t*0.6)*w*0.01;
-      my = baseY + Math.sin(t*1.3)*h*0.015;
-    }
-
-    const fx = femaleFrac*w, fy = groundY - h*0.05;
-
-    // reunion burst
-    if (reunionFlash>0){
-      sctx.save();
-      sctx.globalAlpha = reunionFlash*0.5;
-      const grd = sctx.createRadialGradient((mx+fx)/2,(my+fy)/2,0,(mx+fx)/2,(my+fy)/2,w*0.18);
-      grd.addColorStop(0,"rgba(255,207,92,.9)");
-      grd.addColorStop(1,"rgba(255,207,92,0)");
-      sctx.fillStyle = grd;
-      sctx.fillRect(0,0,w,h);
-      sctx.restore();
-    }
-
-    drawFirefly(sctx, mx, my, b.maleB, 1);
-    drawFirefly(sctx, fx, fy, b.femaleB, 0.85);
-
-    // subtle ground label dots removed for cleanliness
+    });
   }
 
-  function drawFirefly(ctx, x, y, bright, scale){
-    const r = 3.2*scale;
+  function roundRectPath(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+  }
+
+  function drawLed(ctx, x, y, bright, labeled, dpr){
+    dpr = dpr || 1;
+    const r = (labeled ? 4 : 2.6) * dpr;
     if (bright > 0.02){
-      const glowR = (18+34*bright)*scale;
+      const glowR = (16+30*bright) * (labeled?1:0.7) * dpr;
       const grd = ctx.createRadialGradient(x,y,0,x,y,glowR);
       grd.addColorStop(0, `rgba(255,207,92,${0.85*bright})`);
       grd.addColorStop(1, `rgba(255,207,92,0)`);
@@ -654,7 +695,7 @@
 
   // ---- scope ----
   function drawScope(){
-    fitCanvas(scopeCv);
+    const dpr = fitCanvas(scopeCv);
     const w = scopeCv.width, h = scopeCv.height;
     octx.clearRect(0,0,w,h);
 
@@ -663,19 +704,19 @@
     const tStart = tEnd - window_s;
 
     const laneH = h/2;
-    const pad = 10;
+    const pad = 10*dpr;
 
     // gridlines every 1s
     octx.strokeStyle = "rgba(233,227,212,.12)";
     octx.fillStyle = "rgba(233,227,212,.4)";
-    octx.font = "11px 'IBM Plex Mono', monospace";
-    octx.lineWidth = 1;
+    octx.font = `${11*dpr}px 'IBM Plex Mono', monospace`;
+    octx.lineWidth = dpr;
     const firstTick = Math.ceil(tStart);
     for(let s=firstTick; s<=tEnd; s++){
       const x = (s-tStart)/window_s*w;
       octx.beginPath(); octx.moveTo(x,0); octx.lineTo(x,h); octx.stroke();
       if (Math.abs(s - Math.round(s))<1e-6 && s%1===0){
-        octx.fillText((s%2===0? s+"s":""), x+3, h-4);
+        octx.fillText((s%2===0? s+"s":""), x+3*dpr, h-4*dpr);
       }
     }
     // lane baselines + labels
@@ -684,11 +725,13 @@
       octx.strokeStyle = "rgba(233,227,212,.25)";
       octx.beginPath(); octx.moveTo(0,base); octx.lineTo(w,base); octx.stroke();
       octx.fillStyle = "rgba(233,227,212,.55)";
-      octx.font = "600 11px 'Archivo', sans-serif";
-      octx.fillText(i===0?"MALE":"FEMALE", 6, i*laneH+14);
+      octx.font = `600 ${11*dpr}px 'Archivo', sans-serif`;
+      octx.fillText(i===0?"MALE":"FEMALE", 6*dpr, i*laneH+14*dpr);
     });
 
     // curves
+    const scopeInterval = effectiveInterval();
+    const scopeDelay = effectiveDelay();
     function sampleAndDraw(laneIndex, which){
       const base = laneIndex*laneH + laneH - pad;
       const amp = laneH - pad*2;
@@ -697,17 +740,14 @@
       for(let i=0;i<=steps;i++){
         const tt = tStart + (i/steps)*window_s;
         if (tt<0) continue;
-        const interval = effectiveInterval();
-        const cyc = Math.floor(tt/interval);
-        const local = tt - cyc*interval;
-        const b = brightnessAt(local);
+        const b = brightnessAtAbs(tt, scopeInterval, scopeDelay);
         const val = which==="male" ? b.maleB : b.femaleB;
         const x = (tt-tStart)/window_s*w;
         const y = base - val*amp;
         if (i===0) octx.moveTo(x,y); else octx.lineTo(x,y);
       }
       octx.strokeStyle = "#ffcf5c";
-      octx.lineWidth = 2;
+      octx.lineWidth = 2*dpr;
       octx.stroke();
       // soft fill
       octx.lineTo(w, base); octx.lineTo((tStart<0?( -tStart/window_s*w):0), base);
@@ -726,8 +766,10 @@
 
   function updateGaps(b){
     // true silent (dark) durations, as distinct from the onset-to-onset
-    // "response delay" shown in the firmware export panel below.
-    const darkAfterMale = Math.max(0, b.femaleStart - state.maleDur);
+    // "response delay" shown in the firmware export panel below. If the
+    // male's randomized total runs long enough to still be fading when the
+    // female answers, the gap reads 0 (they overlap) rather than going negative.
+    const darkAfterMale = Math.max(0, b.femaleStart - b.maleTotal);
     const femaleEnd = b.femaleStart + state.femaleDur;
     const darkAfterFemale = Math.max(0, b.interval - femaleEnd);
     document.getElementById("gapMF").textContent = Math.round(darkAfterMale*1000) + " ms";

@@ -30,6 +30,9 @@ Structure of repository for product development
 |----|----|----|
 | [6080013](./Develop/6080013.md) | Bill of Materials | Jerome Verhoeven|
 | [6080014](./Develop/6080014.md) | Flash Pattern Simulator ("Big Dipper Dialogue") | Jerome Verhoeven|
+| [6080015](./Develop/6080015.md) | Dev Note: Courtship Sequence (male J-flash, female answer) | Jerome Verhoeven|
+| [6080016](./Develop/6080016.md) | Prototype Assembly Drawings | Jerome Verhoeven|
+| [6080017](./Develop/6080017.md) | Prototype Test Firmware | Jerome Verhoeven|
 | [Asset Template](./Develop/asset-template.md) | Template | TBD|
 | [Sample Asset](./Develop/sample1.md) | Template | TBD|
 

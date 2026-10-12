@@ -21,6 +21,15 @@ What should the fireflies actually *do*: flash rhythm, fades, interplay between 
 - **Synchronous fireflies** (e.g., *Photinus carolinus* in the Smokies) gradually fall into unison. A "sync" mode that drifts from random to synchronized over a minute is a striking, showable trick for older kids.
 - These timing figures can be tuned and visually checked against documented ranges in [6080014, the Flash Pattern Simulator](../Develop/6080014.md) before being committed to firmware constants.
 
+**Addendum (2026-10-12): the courtship micro-event, reconciled.** [6080015, the Courtship Sequence dev note](../Develop/6080015.md) worked out how Meadow's "occasional call-and-response" (above) actually plays out with 6 fixed LEDs, and flagged a conflict with the simulator's model that needed a decision before firmware could be written. **Resolved in favor of the dev note's model**, because it's concrete, has working pseudocode, and — critically — fakes the male's J-flight as motion across physical points (a low LED handing off to the one above it) rather than a single point breathing in place, which reads more like the real "big dipper" flight the species is named for:
+- A **courtship** is an occasional event inside Meadow (every 60-120 s, [`COURTSHIP_EVERY_S`](../Develop/DevNote-Courtship-Sequence.md)), not every flash — the rest of the time, all 6 LEDs just run independent Meadow cadences as before.
+- The **male's J** = a ~0.5 s pulse (fast rise, slower fall) that starts dim on a lower LED and peaks on the LED one slot above it (`J_HANDOFF_MS` later) — the "hand-off" is what sells upward motion with no moving parts.
+- The **female** is always LED 6 (lowest, nearest the moss), answering at ~10% brightness, `ANSWER_DELAY_MS` after the male's **peak** (not his onset — a change from this doc's original framing).
+- Each successive J in one courtship starts one LED lower (the male "approaching"), ending in a smaller single-LED "landing" flash near her.
+- Full detail, field citations, exact timeline, and firmware pseudocode are in [6080015](../Develop/DevNote-Courtship-Sequence.md) — this addendum just records the decision and points there rather than duplicating it.
+
+This supersedes `FLASH_PERIOD_S` (6±1 → 5.9±0.6 s) and `FADE_MS` (→ split into `PULSE_RISE_MS`/`PULSE_FALL_MS`) in [Spec-2's Data Model](./Spec-2.md#data-model-firmware-configuration), which now carries the full constant list. The [simulator (6080014)](../Develop/6080014.md) still models the earlier single-point version — worth a future revision to match, but not a blocker for prototype firmware.
+
 **Flash shape.** A ~0.3-0.8 s fade-in/fade-out, using a gamma-corrected PWM ramp, with a brief peak. Peak brightness randomized ±30% per flash so it never looks mechanical.
 
 **Modes via double-tap ([DD-1](./DD-1-Trigger-Mechanism.md)).** Cycle order:
