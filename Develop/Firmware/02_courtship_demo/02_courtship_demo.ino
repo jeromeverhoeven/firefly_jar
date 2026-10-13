@@ -29,8 +29,15 @@
   table - see Develop/Assembly.md for the full note.
 
   Pin map: Design/Spec-2.md #pin-map-xiao-nrf52840-sense.
+
+  Board package note: on the (non-mbed) "Seeed nRF52 Boards" package,
+  Serial fails to link (undefined reference to Serial /
+  Adafruit_USBD_CDC::begin, only shows up at upload time) unless
+  Adafruit_TinyUSB.h is explicitly included - see 01_bringup_test.ino's
+  header comment for the full explanation.
 */
 
+#include <Adafruit_TinyUSB.h>
 #include <Arduino.h>
 
 // ---------------------------------------------------------------------

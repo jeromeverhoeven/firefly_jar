@@ -18,15 +18,31 @@
 
   Pin map: Design/Spec-2.md #pin-map-xiao-nrf52840-sense.
 
-  Battery-voltage caveat: the P0.14 (enable) / P0.31 (ADC) pattern and
-  the scale factor below follow Seeed's documented XIAO nRF52840 Sense
-  battery-read circuit, but the exact pin macro names and divider ratio
-  have varied slightly across board-package versions. If VBAT prints a
-  wildly wrong number (e.g. 0.00 V or something far from ~3.7-4.2 V),
-  check Seeed's wiki for the macro names in your installed board
-  package version before assuming the circuit itself is at fault.
+  Battery-voltage pins/scaling: verified against a working community
+  library (honvl/Seeed-Xiao-NRF52840-Battery, xiaobattery.h) rather than
+  guessed — the board package itself defines VBAT_ENABLE (pin 14, drive
+  LOW to enable the divider) and PIN_VBAT (the ADC pin) directly, so
+  there's no need to reference raw nRF52 port/pin names at all. (An
+  earlier revision of this sketch used invented macros P0_14/P0_31,
+  which don't exist in the board package and failed to compile — fixed
+  here.) That reference library's scaling constant assumes the default
+  (10-bit) ADC resolution, so this sketch deliberately never calls
+  analogReadResolution() - see the comment in setup(). Even so, treat
+  the first VBAT printout as provisional: check it against a multimeter
+  reading of the actual cell before trusting it for anything (like the
+  low-battery cue's 3.5 V threshold later on).
+
+  Board package note: on the (non-mbed) "Seeed nRF52 Boards" package,
+  Serial silently fails to LINK (not compile - you only find out at
+  upload time) unless Adafruit_TinyUSB.h is explicitly included, even
+  though nothing here calls it directly. That's the "undefined reference
+  to Serial / Adafruit_USBD_CDC::begin" error this line fixes. The
+  alternative is switching to the "mbed-enabled" board package instead -
+  worth doing later when IMU work starts, not now (it costs more flash
+  for nothing this sketch needs yet).
 */
 
+#include <Adafruit_TinyUSB.h>
 #include <Arduino.h>
 
 const uint8_t LED_PINS[6] = {D2, D3, D4, D5, D6, D7};
@@ -38,9 +54,8 @@ const char*   LED_NAMES[6] = {
 const uint8_t LDR_POWER_PIN = D1;
 const uint8_t LDR_SENSE_PIN = D0;
 
-// Seeed XIAO nRF52840 Sense battery-read pins (see caveat above).
-const uint8_t VBAT_ENABLE_PIN = P0_14;
-const uint8_t VBAT_SENSE_PIN  = P0_31;
+// VBAT_ENABLE and PIN_VBAT are defined by Seeed's board package itself
+// (see the file header) - no local pin definitions needed for these two.
 
 void setup() {
   Serial.begin(115200);
@@ -54,10 +69,17 @@ void setup() {
   pinMode(LDR_POWER_PIN, OUTPUT);
   digitalWrite(LDR_POWER_PIN, LOW);
 
-  pinMode(VBAT_ENABLE_PIN, OUTPUT);
-  digitalWrite(VBAT_ENABLE_PIN, HIGH); // disabled by default; drive LOW only to sample, per Seeed's pattern
+  pinMode(VBAT_ENABLE, OUTPUT);
+  digitalWrite(VBAT_ENABLE, HIGH); // disabled by default; drive LOW only to sample, per Seeed's pattern
+  pinMode(PIN_VBAT, INPUT);
 
-  analogReadResolution(12);
+  // Deliberately NOT calling analogReadResolution() here: the VBAT scaling
+  // constant below was lifted from a verified reference implementation
+  // that reads at the Arduino core's default resolution (10-bit on this
+  // core). Changing the resolution would silently invalidate that constant
+  // (12-bit counts read ~4x higher for the same voltage) - easy to miss
+  // and exactly the kind of bug that bit the first pin-macro attempt here.
+  // LDR_raw below is therefore also 0-1023, not 0-4095.
 
   Serial.println();
   Serial.println(F("=== Firefly Jar bring-up test ==="));
@@ -88,14 +110,15 @@ uint16_t sampleLdr() {
 }
 
 float readBatteryVoltage() {
-  digitalWrite(VBAT_ENABLE_PIN, LOW); // enable the divider
+  digitalWrite(VBAT_ENABLE, LOW); // enable the divider
   delay(2);
-  uint16_t raw = analogRead(VBAT_SENSE_PIN);
-  digitalWrite(VBAT_ENABLE_PIN, HIGH); // disable again, don't leave it drawing current
-  // 12-bit ADC, 3.0V reference, x2 divider is Seeed's commonly documented
-  // scaling for this circuit - verify against your board package if the
-  // result looks wrong (see the file header caveat).
-  return (raw / 4095.0f) * 3.0f * 2.0f;
+  uint16_t raw = analogRead(PIN_VBAT);
+  digitalWrite(VBAT_ENABLE, HIGH); // disable again, don't leave it drawing current
+  // Scaling verified against honvl/Seeed-Xiao-NRF52840-Battery (xiaobattery.h):
+  // mV-per-count constant below, then correct for the board's own divider ratio.
+  const float VBAT_MV_PER_LSB = 0.003395996f;
+  float adcVoltage = raw * VBAT_MV_PER_LSB;
+  return adcVoltage * (1510.0f / 510.0f);
 }
 
 void loop() {
@@ -104,7 +127,7 @@ void loop() {
 
   Serial.println(F("--- LDR sample (cover it before the next loop to check response) ---"));
   uint16_t ldr = sampleLdr();
-  Serial.print(F("LDR raw (0-4095): "));
+  Serial.print(F("LDR raw (0-1023): "));
   Serial.println(ldr);
 
   Serial.println(F("--- Battery ---"));
